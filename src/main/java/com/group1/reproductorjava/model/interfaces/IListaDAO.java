@@ -1,7 +1,7 @@
-package com.group1.reproductorjava.interfaces;
+package com.group1.reproductorjava.model.interfaces;
 
-import com.group1.reproductorjava.model.Comentario;
-import com.group1.reproductorjava.model.Lista;
+import com.group1.reproductorjava.model.Entity.Comentario;
+import com.group1.reproductorjava.model.Entity.Lista;
 
 import java.util.List;
 

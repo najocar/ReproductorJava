@@ -1,4 +1,4 @@
-package com.group1.reproductorjava.model;
+package com.group1.reproductorjava.model.Entity;
 
 public class Cancion {
     int id;

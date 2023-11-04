@@ -1,4 +1,6 @@
-package com.group1.reproductorjava.model;
+package com.group1.reproductorjava.model.Entity;
+
+import com.group1.reproductorjava.model.Entity.Lista;
 
 import java.util.List;
 

@@ -1,7 +1,6 @@
-package com.group1.reproductorjava.interfaces;
+package com.group1.reproductorjava.model.interfaces;
 
-import com.group1.reproductorjava.model.Lista;
-import com.group1.reproductorjava.model.Usuario;
+import com.group1.reproductorjava.model.Entity.Usuario;
 
 import java.util.List;
 

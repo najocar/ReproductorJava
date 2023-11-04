@@ -1,6 +1,6 @@
-package com.group1.reproductorjava.interfaces;
+package com.group1.reproductorjava.model.interfaces;
 
-import com.group1.reproductorjava.model.Artista;
+import com.group1.reproductorjava.model.Entity.Artista;
 
 import java.util.List;
 

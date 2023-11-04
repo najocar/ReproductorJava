@@ -7,9 +7,7 @@ import java.util.List;
 public interface ICancionDAO {
     boolean getCancion(int id);
     boolean getCancion(String name);
-    List<Cancion> getAllCanciones();
-    boolean saveCancion(Cancion cancion);
-    boolean deleteCancion(Cancion cancion);
+    boolean saveCancion();
+    boolean deleteCancion();
     void oneReproduction();
-    List<Cancion> selectByGender(String gender);
 }

@@ -8,16 +8,17 @@ import com.group1.reproductorjava.model.Entity.Usuario;
 import com.group1.reproductorjava.model.interfaces.IListaDAO;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListaDAO extends Lista implements IListaDAO {
 
     private final static String INSERT ="INSERT INTO lista (nombre,id_user,descripcion) VALUES(?,?,?)";
-    private final static String UPDATE ="UPDATE lista SET nombre=?,id_user=?,descripcion=? WHERE id=?";
+    private final static String UPDATE ="UPDATE lista SET nombre=?,descripcion=? WHERE id=?";
     private final static String DELETE="DELETE FROM lista WHERE id=?";
-    private final static String SELECTBYID="SELECT id,nombre,localizacion,jefe,area,id_sede FROM Complejo WHERE id=?";
+    private final static String SELECTBYID="SELECT id,nombre,id_user,description FROM lista WHERE id=?";
     private final static String SELECTALL="SELECT id,nombre,localizacion,jefe,area,id_sede FROM Complejo";
-    private final static String SELECTBYSEDE="SELECT id,nombre,localizacion,jefe,area,id_sede FROM Complejo WHERE id_sede=?";
+    private final static String SELECTBYCREADOR="SELECT id,nombre,id_user,description FROM artista WHERE id_user=?";
 
     public ListaDAO(int id, String nombre,String descripcion){
         super(id,nombre,descripcion);
@@ -33,7 +34,28 @@ public class ListaDAO extends Lista implements IListaDAO {
     }
     @Override
     public boolean getLista(int id) {
-        return false;
+        Connection conn = MariaDBConnection.getConnection();
+        if(conn==null) return false;
+        try(PreparedStatement ps = conn.prepareStatement(SELECTBYID)){
+            ps.setInt(1,id);
+            if(ps.execute()){
+                try(ResultSet rs = ps.getResultSet()){
+                    if(rs.next()){
+                        setId(rs.getInt("id"));
+                        setName(rs.getString("nombre"));
+                        setDescription(rs.getString("descripcion"));
+                        canciones(CancionDAO.getCancionByLista(this.getId()));
+                        comentarios(ComentarioDAO.getComentarioByLista(this.getId()));
+                        userCreator = new UsuarioDAO(rs.getUsuario("id_user"));
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -43,7 +65,30 @@ public class ListaDAO extends Lista implements IListaDAO {
 
     @Override
     public List<Lista> getAllListas() {
-        return null;
+        Connection conn = MariaDBConnection.getConnection();
+        if(conn==null) return null;
+        List<Lista> result=new ArrayList<>();
+        try(PreparedStatement ps = conn.prepareStatement(SELECTALL)){
+            if(ps.execute()){
+                try(ResultSet rs = ps.getResultSet()){
+                    while(rs.next()){
+                        Lista l = new Lista();
+                        l.setId(rs.getInt("id"));
+                        l.setName(rs.getString("nombre"));
+                        l.setDescription(rs.getString("descripcion"));
+                        l.setCanciones(CancionDAO.getCancionByLista(rs.getInt("id")));
+                        l.setComentarios(ComentarioDAO.getComentarioByLista(rs.getInt("id")));
+                        l.setUserCreator(new UsuarioDAO(rs.getUsuario("id_user")));
+
+                        result.add(l);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return result;
     }
 
     @Override
@@ -63,13 +108,13 @@ public class ListaDAO extends Lista implements IListaDAO {
                     try(ResultSet rs = ps.getGeneratedKeys()) {
                         if (rs.next()) {
                             setId(rs.getInt(1));
-                            if (canciones!=null){
-                                for(Cancion c:canciones){
-                                    CancionDAO c2 = new CancionDAO(c);
-                                    c2.lista=this;
-                                    c2.save();
-                                }
-                            }
+//                            if (canciones!=null){
+//                                for(Cancion c:canciones){
+//                                    CancionDAO c2 = new CancionDAO(c);
+//                                    c2.lista=this;
+//                                    c2.saveCancion();
+//                                }
+//                            }
                             return true;
                         }else{
                             return false;
@@ -93,17 +138,10 @@ public class ListaDAO extends Lista implements IListaDAO {
         if(conn == null) return false;
 
         try(PreparedStatement ps = conn.prepareStatement(UPDATE)) {
-            ps.setString(1,getNombre());
-            ps.setInt(2,getPresupuesto());
+            ps.setString(1,getName());
+            ps.setString(3,getDescription());
             ps.setInt(3,getId());
             if (ps.executeUpdate()==1){
-                if (complejos!=null){
-                    for(Complejo c:complejos){
-                        ComplejoDAO c2 = new ComplejoDAO(c);
-                        c2.sede=this;
-                        c2.save();
-                    }
-                }
                 return true;
             }
             setId(-1);
@@ -117,23 +155,39 @@ public class ListaDAO extends Lista implements IListaDAO {
 
     @Override
     public boolean deleteLista(Lista Lista) {
-        return false;
+        Connection conn = MariaDBConnection.getConnection();
+        if(conn == null) return false;
+
+        try(PreparedStatement ps = conn.prepareStatement(DELETE)){
+            ps.setInt(1, getId());
+
+            if(ps.executeUpdate() == 1) return true;
+            return false;
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
     public boolean addComment(Comentario coment) {
+        if(!comentarios.contains(coment))
+            return comentarios.add(coment);
         return false;
     }
 
     @Override
     public boolean deleteComment(Comentario coment) {
+        if(comentarios.contains(coment))
+            return comentarios.remove(coment);
         return false;
     }
 
     @Override
     public List<Cancion> getCanciones() {
         if (canciones==null){
-            setCanciones(CancionDAO.getCancion(getId()));
+            setCanciones(CancionDAO.getCancionByLista(getId()));
         }
         return super.getCanciones();
     }

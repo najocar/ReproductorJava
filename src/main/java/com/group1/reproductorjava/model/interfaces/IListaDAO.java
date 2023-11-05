@@ -8,7 +8,6 @@ import java.util.List;
 public interface IListaDAO {
     boolean getLista(int id);
     boolean getLista(String name);
-    List<Lista> getAllListas();
     boolean save();
     boolean deleteLista(Lista Lista);
     boolean addComment(Comentario coment);

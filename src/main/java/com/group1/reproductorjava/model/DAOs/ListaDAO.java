@@ -18,7 +18,7 @@ public class ListaDAO extends Lista implements IListaDAO {
     private final static String DELETE="DELETE FROM lista WHERE id=?";
     private final static String SELECTBYID="SELECT id,nombre,id_user,description FROM lista WHERE id=?";
     private final static String SELECTALL="SELECT id,nombre,localizacion,jefe,area,id_sede FROM Complejo";
-    private final static String SELECTBYCREADOR="SELECT id,nombre,id_user,description FROM artista WHERE id_user=?";
+    private final static String SELECTBYCREADOR="SELECT id,nombre,id_user,description FROM user WHERE id_user=?";
 
     public ListaDAO(int id, String nombre,String descripcion){
         super(id,nombre,descripcion);
@@ -63,8 +63,7 @@ public class ListaDAO extends Lista implements IListaDAO {
         return false;
     }
 
-    @Override
-    public List<Lista> getAllListas() {
+    public static List<Lista> getAllListas() {
         Connection conn = MariaDBConnection.getConnection();
         if(conn==null) return null;
         List<Lista> result=new ArrayList<>();

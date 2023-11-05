@@ -1,6 +1,7 @@
 package com.group1.reproductorjava.model.Entity;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Lista {
     private int id;
@@ -70,5 +71,30 @@ public class Lista {
 
     public void setComentarios(List<Comentario> comentarios) {
         this.comentarios = comentarios;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Lista lista = (Lista) o;
+        return id == lista.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Lista{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", userCreator=" + userCreator +
+                ", canciones=" + canciones +
+                ", comentarios=" + comentarios +
+                '}';
     }
 }

@@ -12,7 +12,7 @@ public class ArtistaDAO implements IArtistaDAO {
 
     private static ArtistaDAO instance;
 
-    private final static String INSERT = "INSERT INTO Artista (id, nombre, nacionalidad,foto) VALUES(?, ?, ?, ?)";
+    private final static String INSERT = "INSERT INTO Artista (nombre, nacionalidad,foto) VALUES(?, ?, ?)";
     private final static String UPDATE = "UPDATE Artista SET nombre=?, foto=?, nacionalidad=? WHERE id=?";
     private final static String DELETE = "DELETE FROM Artista WHERE id=?";
     private final static String SELECT_BY_ID = "SELECT id, nombre, nacionalidad, foto FROM Artista WHERE id=?";
@@ -38,8 +38,8 @@ public class ArtistaDAO implements IArtistaDAO {
 
         try (PreparedStatement ps = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, artista.getName());
-            ps.setString(2, artista.getPhoto());
-            ps.setString(3, artista.getNacionality());
+            ps.setString(2, artista.getNacionality());
+            ps.setString(3, artista.getPhoto());
 
             if (ps.executeUpdate() == 1) {
                 try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -145,9 +145,9 @@ public class ArtistaDAO implements IArtistaDAO {
                     while (rs.next()) {
                         Artista artista = new Artista(
                                 rs.getInt("id"),
-                                rs.getString("name"),
-                                rs.getString("photo"),
-                                rs.getString("nacionality"),
+                                rs.getString("nombre"),
+                                rs.getString("nacionalidad"),
+                                rs.getString("foto"),
                                 null // Necesitas manejar la lista de discos apropiadamente
                         );
                         artistas.add(artista);

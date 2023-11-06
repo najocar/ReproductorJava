@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import com.group1.reproductorjava.model.Connection.MariaDBConnection;
 import com.group1.reproductorjava.model.Entity.Artista;
+import com.group1.reproductorjava.model.Entity.Disco;
 import com.group1.reproductorjava.model.interfaces.IArtistaDAO;
 
-public class ArtistaDAO implements IArtistaDAO {
+public class ArtistaDAO extends Artista implements IArtistaDAO {
 
 
     private final static String INSERT = "INSERT INTO artista (nombre, nacionalidad,foto) VALUES(?, ?, ?)";
@@ -16,6 +17,23 @@ public class ArtistaDAO implements IArtistaDAO {
     private final static String SELECT_BY_ID = "SELECT * FROM artista WHERE id=?";
     private final static String SELECT_ALL = "SELECT * FROM artista";
     private final static String SELECT_BY_NAME = "SELECT * FROM artista WHERE nombre=?";
+
+    public ArtistaDAO(int id) {
+        getArtista(id);
+    }
+
+    public ArtistaDAO(Artista a){
+        super(a.getId(),a.getName(),a.getPhoto(),a.getNacionality());
+        this.discos=a.getDiscos();
+    }
+
+    public ArtistaDAO(int id, String name, String photo, String nacionality){
+        super(id,name,photo,nacionality);
+    }
+
+    public ArtistaDAO() {
+
+    }
 
     public boolean saveArtista(Artista artista) {
         Connection conn = MariaDBConnection.getConnection();
@@ -87,7 +105,12 @@ public class ArtistaDAO implements IArtistaDAO {
             ps.setInt(1, id);
             if (ps.execute()) {
                 try (ResultSet rs = ps.getResultSet()) {
-                    return rs.next(); // Devuelve true si se encuentra un artista con el ID, de lo contrario, false.
+                   if(rs.next()){
+                       setId(rs.getInt("id"));
+                       setName(rs.getString("nombre"));
+                       setNacionality(rs.getString("nacionalidad"));
+                       setPhoto(rs.getString("foto"));
+                   }
                 }
             }
         } catch (SQLException e) {
@@ -102,12 +125,16 @@ public class ArtistaDAO implements IArtistaDAO {
         Connection conn = MariaDBConnection.getConnection();
         if (conn == null)
             return false;
-
         try (PreparedStatement ps = conn.prepareStatement(SELECT_BY_NAME)) {
             ps.setString(1, name);
             if (ps.execute()) {
                 try (ResultSet rs = ps.getResultSet()) {
-                    return rs.next(); // Devuelve true si se encuentra un artista con el nombre, de lo contrario, false.
+                    if(rs.next()){
+                        setId(rs.getInt("id"));
+                        setName(rs.getString("nombre"));
+                        setNacionality(rs.getString("nacionalidad"));
+                        setPhoto(rs.getString("foto"));
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -131,8 +158,7 @@ public class ArtistaDAO implements IArtistaDAO {
                                 rs.getInt("id"),
                                 rs.getString("nombre"),
                                 rs.getString("nacionalidad"),
-                                rs.getString("foto"),
-                                null // Necesitas manejar la lista de discos apropiadamente
+                                rs.getString("foto")
                         );
                         artistas.add(artista);
                     }
@@ -144,4 +170,14 @@ public class ArtistaDAO implements IArtistaDAO {
 
         return artistas;
     }
+
+   /* public List<Disco>getDiscos(){
+        if(discos!=null){
+            return super.getDiscos();
+        } else {
+            DiscoDAO.getByArtista(getId());
+        }
+        return super.getDiscos();
+    }*/
+
 }

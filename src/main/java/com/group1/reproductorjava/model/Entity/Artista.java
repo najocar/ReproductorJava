@@ -1,21 +1,25 @@
 package com.group1.reproductorjava.model.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Artista {
-    int id;
-    String name;
-    String photo;
-    String nacionality;
-    List<Disco> discos;
+   private int id;
+    private String name;
+    private String photo;
+   private String nacionality;
+    protected List<Disco> discos;
 
-    public Artista(int id, String name, String photo, String nacionality, List<Disco> discos) {
+    public Artista(int id, String name, String photo, String nacionality) {
         this.id = id;
         this.name = name;
         this.photo = photo;
         this.nacionality = nacionality;
-        this.discos = discos;
+    }
+
+    public Artista(){
+        this(0,"","","");
     }
 
     public int getId() {

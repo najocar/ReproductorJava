@@ -3,7 +3,6 @@ package com.group1.reproductorjava.model.DAOs;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.group1.reproductorjava.model.Connection.MariaDBConnection;
 import com.group1.reproductorjava.model.Entity.Artista;
 import com.group1.reproductorjava.model.interfaces.IArtistaDAO;
@@ -12,12 +11,12 @@ public class ArtistaDAO implements IArtistaDAO {
 
     private static ArtistaDAO instance;
 
-    private final static String INSERT = "INSERT INTO Artista (nombre, nacionalidad,foto) VALUES(?, ?, ?)";
-    private final static String UPDATE = "UPDATE Artista SET nombre=?, foto=?, nacionalidad=? WHERE id=?";
-    private final static String DELETE = "DELETE FROM Artista WHERE id=?";
-    private final static String SELECT_BY_ID = "SELECT id, nombre, nacionalidad, foto FROM Artista WHERE id=?";
-    private final static String SELECT_ALL = "SELECT * FROM Artista";
-    private final static String SELECT_BY_NAME = "SELECT id, nombre, nacionalidad, foto FROM Artista WHERE nombre=?";
+    private final static String INSERT = "INSERT INTO artista (nombre, nacionalidad,foto) VALUES(?, ?, ?)";
+    private final static String UPDATE = "UPDATE artista SET nombre=?, foto=?, nacionalidad=? WHERE id=?";
+    private final static String DELETE = "DELETE FROM artista WHERE id=?";
+    private final static String SELECT_BY_ID = "SELECT * FROM artista WHERE id=?";
+    private final static String SELECT_ALL = "SELECT * FROM artista";
+    private final static String SELECT_BY_NAME = "SELECT * FROM artista WHERE nombre=?";
 
 
     private ArtistaDAO() {
@@ -130,8 +129,6 @@ public class ArtistaDAO implements IArtistaDAO {
 
         return false;
     }
-
-
     public List<Artista> getAllArtists() {
         Connection conn = MariaDBConnection.getConnection();
         if (conn == null)

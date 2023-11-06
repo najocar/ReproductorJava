@@ -16,7 +16,7 @@ public class ArtistaDAO implements IArtistaDAO {
     private final static String UPDATE = "UPDATE Artista SET nombre=?, foto=?, nacionalidad=? WHERE id=?";
     private final static String DELETE = "DELETE FROM Artista WHERE id=?";
     private final static String SELECT_BY_ID = "SELECT id, nombre, nacionalidad, foto FROM Artista WHERE id=?";
-    private final static String SELECT_ALL = "SELECT id, nombre,nacionalidad,foto FROM Artista";
+    private final static String SELECT_ALL = "SELECT * FROM Artista";
     private final static String SELECT_BY_NAME = "SELECT id, nombre, nacionalidad, foto FROM Artista WHERE nombre=?";
 
 

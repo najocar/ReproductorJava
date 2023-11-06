@@ -9,7 +9,6 @@ import com.group1.reproductorjava.model.interfaces.IArtistaDAO;
 
 public class ArtistaDAO implements IArtistaDAO {
 
-    private static ArtistaDAO instance;
 
     private final static String INSERT = "INSERT INTO artista (nombre, nacionalidad,foto) VALUES(?, ?, ?)";
     private final static String UPDATE = "UPDATE artista SET nombre=?, foto=?, nacionalidad=? WHERE id=?";
@@ -17,18 +16,6 @@ public class ArtistaDAO implements IArtistaDAO {
     private final static String SELECT_BY_ID = "SELECT * FROM artista WHERE id=?";
     private final static String SELECT_ALL = "SELECT * FROM artista";
     private final static String SELECT_BY_NAME = "SELECT * FROM artista WHERE nombre=?";
-
-
-    private ArtistaDAO() {
-        // Constructor privado para evitar la creación de instancias directas.
-    }
-
-    public static ArtistaDAO getInstance() {
-        if (instance == null) {
-            instance = new ArtistaDAO();
-        }
-        return instance;
-    }
 
     public boolean saveArtista(Artista artista) {
         Connection conn = MariaDBConnection.getConnection();

@@ -2,6 +2,7 @@ package com.group1.reproductorjava.model.DAOs;
 
 import com.group1.reproductorjava.model.Connection.MariaDBConnection;
 import com.group1.reproductorjava.model.Entity.Artista;
+import com.group1.reproductorjava.model.Entity.Cancion;
 import com.group1.reproductorjava.model.Entity.Disco;
 import com.group1.reproductorjava.model.interfaces.IDiscoDAO;
 
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class DiscoDAO implements IDiscoDAO {
+public class DiscoDAO extends Disco implements IDiscoDAO {
     private final static String INSERT = "INSERT INTO disco (nombre, id_artista, fecha) VALUES (?, ?, ?)";
     private final static String UPDATE = "UPDATE disco SET nombre = ?, id_artista = ?, fecha = ? WHERE id = ?";
     private final static String DELETE = "DELETE FROM disco WHERE id = ?";
@@ -21,6 +22,19 @@ public class DiscoDAO implements IDiscoDAO {
     private final static String SELECT_BY_NAME = "SELECT id, nombre, id_artista, fecha FROM disco WHERE nombre = ?";
     private final static String SELECT_ALL = "SELECT id, nombre, id_artista, fecha FROM disco";
     private final static String SELECT_BY_ARTISTA = "SELECT id, nombre, id_artista, foto, fecha FROM disco WHERE id_artista = ?";
+
+    public DiscoDAO(int id, String nombre, Date fecha, String photo, Artista artista, List<Cancion> canciones){
+
+        super(id, nombre, fecha, photo, artista, canciones);
+    }
+    public DiscoDAO(int id){
+        getDisco(id);
+    }
+    public DiscoDAO(Disco d){
+        super(d.getId(), d.getName(), d.getFecha(),
+                d.getPhoto(), d.getArtista(), d.getCanciones()
+        );
+    }
 
     @Override
     public boolean getDisco(int id) {

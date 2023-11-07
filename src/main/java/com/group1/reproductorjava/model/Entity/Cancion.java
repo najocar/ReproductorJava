@@ -13,7 +13,6 @@ public class Cancion {
     String gender;
     int nReproductions;
     Disco disco;
-    List<Lista> listas;
 
     public Cancion(int id) {
         this(id, "", 0, "", 0, null);

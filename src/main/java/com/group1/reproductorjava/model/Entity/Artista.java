@@ -71,12 +71,12 @@ public class Artista {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Artista artista = (Artista) o;
-        return id == artista.id && Objects.equals(name, artista.name) && Objects.equals(photo, artista.photo) && Objects.equals(nacionality, artista.nacionality) && Objects.equals(discos, artista.discos);
+        return id == artista.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, photo, nacionality, discos);
+        return Objects.hash(id);
     }
 
     @Override

@@ -9,6 +9,7 @@ public class Comentario {
     LocalDate date;
     String message;
     Usuario usuario;
+
     Lista lista;
 
     public Comentario(int id) {
@@ -25,6 +26,7 @@ public class Comentario {
 
     public Comentario(){
         this(-1, null, "", null, null);
+
     }
 
     public int getId() {
@@ -40,6 +42,7 @@ public class Comentario {
     }
 
     public void setDate(LocalDate date) {
+
         this.date = date;
     }
 

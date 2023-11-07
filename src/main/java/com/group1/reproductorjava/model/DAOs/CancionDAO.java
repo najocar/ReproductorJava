@@ -251,7 +251,7 @@ public class CancionDAO extends Cancion implements ICancionDAO {
      * @return List<Cancion> | null
      * if dont return null, success
      */
-    public List<Cancion> getCancionesByList(int idList){
+    public static List<Cancion> getCancionesByList(int idList){
         Connection conn = MariaDBConnection.getConnection();
         if(conn == null) return null;
         List<Cancion> result = new ArrayList<>();

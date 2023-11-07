@@ -11,18 +11,19 @@ public class Lista {
     protected List<Cancion> canciones;
     protected List<Comentario> comentarios;
 
-    public Lista(int id, String name, String description) {
+    public Lista(int id, String name, Usuario userCreator, String description) {
         this.id = id;
         this.name = name;
+        this.userCreator = userCreator;
         this.description = description;
     }
 
     public Lista(int id) {
-        this(id, "", "");
+        this(id, "", null, "");
     }
 
     public Lista() {
-        this(-1, "", "");
+        this(-1, "", null,"");
     }
 
     public int getId() {

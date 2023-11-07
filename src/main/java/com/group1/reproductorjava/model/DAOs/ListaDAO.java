@@ -22,8 +22,8 @@ public class ListaDAO extends Lista implements IListaDAO {
     private final static String SAVESONGS = "INSERT INTO cancion_lista (id_lista, id_cancion) VALUES(?,?)";
     private final static String DELETESONGS = "DELETE FROM cancion_lista WHERE id=?";
 
-    public ListaDAO(int id, String nombre, String descripcion) {
-        super(id, nombre, descripcion);
+    public ListaDAO(int id, String nombre, Usuario userCreator, String descripcion) {
+        super(id, nombre, userCreator, descripcion);
     }
 
     public ListaDAO(int id) {
@@ -31,7 +31,7 @@ public class ListaDAO extends Lista implements IListaDAO {
     }
 
     public ListaDAO(Lista lista) {
-        super(lista.getId(),lista.getUserCreator() ,lista.getName(), lista.getDescription());
+        super(lista.getId(), lista.getName(), lista.getUserCreator(), lista.getDescription());
         this.canciones = lista.getCanciones();
         this.comentarios = lista.getComentarios();
         this.userCreator = lista.getUserCreator();
@@ -49,9 +49,9 @@ public class ListaDAO extends Lista implements IListaDAO {
                         setId(rs.getInt("id"));
                         setName(rs.getString("nombre"));
                         setDescription(rs.getString("descripcion"));
-                        canciones(CancionDAO.getCancionByLista(this.getId()));
-                        comentarios(ComentarioDAO.getComentarioByLista(this.getId()));
-                        userCreator = new UsuarioDAO(rs.getInt("id_user"));
+                        setCanciones(CancionDAO.getCancionesByList(this.getId()));
+                        setComentarios(ComentarioDAO.getComentariosByLista(this.getId()));
+                        setUserCreator(new UsuarioDAO(rs.getInt("id_user")));
                     }
                 }
             }
@@ -82,7 +82,7 @@ public class ListaDAO extends Lista implements IListaDAO {
                         l.setDescription(rs.getString("descripcion"));
                         l.setCanciones(CancionDAO.getCancionesByList(rs.getInt("id")));
                         l.setComentarios(ComentarioDAO.getComentariosByLista(rs.getInt("id")));
-                        l.setUserCreator(new UsuarioDAO(rs.getUsuario("id_user")));
+                        l.setUserCreator(new UsuarioDAO(rs.getInt("id_user")));
 
                         result.add(l);
                     }
@@ -115,10 +115,12 @@ public class ListaDAO extends Lista implements IListaDAO {
                             if (canciones != null) {
                                 for (Cancion c : canciones) {
                                     CancionDAO c2 = new CancionDAO(c);
-                                    c2.lista = this;
-                                    c2.saveCancion();
-                                    if (!c2.getCancionesByList(this.getId()).contains(c))
+                                    //c2.lista = this;
+                                    //c2.saveCancion();
+                                    if (!c2.getCancionesByList(this.getId()).contains(c)){
+                                        //c2.get
                                         saveSongRelation(c);
+                                    }
                                 }
                             }
 
@@ -145,7 +147,7 @@ public class ListaDAO extends Lista implements IListaDAO {
 
         try (PreparedStatement ps = conn.prepareStatement(SAVESONGS)) {
             ps.setInt(1, this.getId());
-            ps.setInt(2, song.getId();
+            ps.setInt(2, song.getId());
             ps.setString(3, getDescription());
 
             if (ps.executeUpdate() == 1) {
@@ -209,8 +211,8 @@ public class ListaDAO extends Lista implements IListaDAO {
                         l.setName(rs.getString("nombre"));
                         l.setDescription(rs.getString("descripcion"));
                         l.setCanciones(CancionDAO.getCancionesByList(rs.getInt("id")));
-                        l.setComentarios(ComentarioDAO.getComentarioByLista(rs.getInt("id")));
-                        l.setUserCreator(new UsuarioDAO(rs.getUsuario("id_user")));
+                        l.setComentarios(ComentarioDAO.getComentariosByLista(rs.getInt("id")));
+                        l.setUserCreator(new UsuarioDAO(rs.getInt("id_user")));
 
                         result.add(l);
                     }
@@ -265,16 +267,16 @@ public class ListaDAO extends Lista implements IListaDAO {
     @Override
     public List<Comentario> getComentarios() {
         if (comentarios == null) {
-            setComentarios(//preguntar si debería haber un DAO para comentarios);
+            setComentarios(ComentarioDAO.getComentariosByLista(getId()));
         }
         return super.getComentarios();
     }
 
-    @Override
-    public Usuario getUserCreator() {
-        if (userCreator == null) {
-            setUserCreator(UsuarioDAO.getUsuario(getId()));
-        }
-        return super.getUserCreator();
-    }
+//    @Override
+//    public Usuario getUserCreator() {
+//        if (userCreator == null) {
+//            setUserCreator(UsuarioDAO.getUsuario(getId()));
+//        }
+//        return super.getUserCreator();
+//    }
 }

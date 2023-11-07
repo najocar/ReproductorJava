@@ -267,7 +267,7 @@ public class CancionDAO extends Cancion implements ICancionDAO {
                                 rs.getInt("duracion"),
                                 rs.getString("genero"),
                                 rs.getInt("nReproducciones"),
-                                new DiscoDAO(rs.getInt("id_disco")
+                                new DiscoDAO(rs.getInt("id_disco"))
                         );
                         result.add(song);
                     }

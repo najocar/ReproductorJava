@@ -31,7 +31,7 @@ public class ListaDAO extends Lista implements IListaDAO {
     }
 
     public ListaDAO(Lista lista) {
-        super(lista.getId(), lista.getName(), lista.getDescription());
+        super(lista.getId(),lista.getUserCreator() ,lista.getName(), lista.getDescription());
         this.canciones = lista.getCanciones();
         this.comentarios = lista.getComentarios();
         this.userCreator = lista.getUserCreator();
@@ -80,8 +80,8 @@ public class ListaDAO extends Lista implements IListaDAO {
                         l.setId(rs.getInt("id"));
                         l.setName(rs.getString("nombre"));
                         l.setDescription(rs.getString("descripcion"));
-                        l.setCanciones(CancionDAO.getCancionByLista(rs.getInt("id")));
-                        l.setComentarios(ComentarioDAO.getComentarioByLista(rs.getInt("id")));
+                        l.setCanciones(CancionDAO.getCancionesByList(rs.getInt("id")));
+                        l.setComentarios(ComentarioDAO.getComentariosByLista(rs.getInt("id")));
                         l.setUserCreator(new UsuarioDAO(rs.getUsuario("id_user")));
 
                         result.add(l);
@@ -117,7 +117,7 @@ public class ListaDAO extends Lista implements IListaDAO {
                                     CancionDAO c2 = new CancionDAO(c);
                                     c2.lista = this;
                                     c2.saveCancion();
-                                    if (!c2.getCancionesByList().contain(c))
+                                    if (!c2.getCancionesByList(this.getId()).contains(c))
                                         saveSongRelation(c);
                                 }
                             }
@@ -257,7 +257,7 @@ public class ListaDAO extends Lista implements IListaDAO {
     @Override
     public List<Cancion> getCanciones() {
         if (canciones == null) {
-            setCanciones(CancionDAO.getCancionByLista(getId()));
+            setCanciones(CancionDAO.getCancionesByList(getId()));
         }
         return super.getCanciones();
     }
@@ -273,7 +273,7 @@ public class ListaDAO extends Lista implements IListaDAO {
     @Override
     public Usuario getUserCreator() {
         if (userCreator == null) {
-            setComentarios(UsuarioDAO.getUsuario(getId()));
+            setUserCreator(UsuarioDAO.getUsuario(getId()));
         }
         return super.getUserCreator();
     }

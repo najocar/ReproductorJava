@@ -63,18 +63,19 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
         }
     }
 
-    public boolean updateArtista(Artista artista) {
+    public boolean updateArtista() {
+        if(getId()==-1) return false;
         Connection conn = MariaDBConnection.getConnection();
         if (conn == null)
             return false;
-
         try (PreparedStatement ps = conn.prepareStatement(UPDATE)) {
-            ps.setString(1, artista.getName());
-            ps.setString(2, artista.getPhoto());
-            ps.setString(3, artista.getNacionality());
-            ps.setInt(4, artista.getId());
-
-            return ps.executeUpdate() == 1;
+            ps.setString(1, getName());
+            ps.setString(2, getPhoto());
+            ps.setString(3, getNacionality());
+            ps.setInt(4, getId());
+            if(ps.executeUpdate()==1) return true;
+            setId(-1);
+            return false;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

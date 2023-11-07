@@ -21,7 +21,8 @@ public class CancionDAO extends Cancion implements ICancionDAO {
     private final static String SELECTBYGENDER = "SELECT id, nombre, duracion, genero, n_reproducciones, id_disco FROM cancion WHERE genero LIKE ?";
     private final static String INSERT = "INSERT INTO cancion (nombre, duracion, genero, n_reproducciones, id_disco) VALUES (?, ?, ?, ?, ?)";
     private final static String DELETE = "DELETE FROM cancion WHERE id = ?";
-    private final static String SELECTLISTOFCANCION = "SELECT l.id, l.nombre, l.id_user, l.descripcion FROM lista as l JOIN cancion_lista as cl ON l.id = cl.id_lista WHERE l.id = ?";
+    private final static String SELECTSONGBYLIST = "SELECT id, nombre, duracion, genero, n_reproducciones, id_disco FROM cancion WHERE id_disco = ?";
+
 
     public CancionDAO(int id){
         getCancion(id);
@@ -56,7 +57,7 @@ public class CancionDAO extends Cancion implements ICancionDAO {
                         setDuration(rs.getInt("duracion"));
                         setGender(rs.getString("genero"));
                         setnReproductions(rs.getInt("n_reproducciones"));
-                        setDisco(new DiscoDAO(rs.getInt("id_disco")).getDisco(rs.getInt("id_disco")));
+                        setDisco(new DiscoDAO(rs.getInt("id_disco")));
                         return true;
                     }
                 }
@@ -91,7 +92,7 @@ public class CancionDAO extends Cancion implements ICancionDAO {
                         setDuration(rs.getInt("duracion"));
                         setGender(rs.getString("genero"));
                         setnReproductions(rs.getInt("n_reproducciones"));
-                        setDisco(new DiscoDAO(rs.getInt("id_disco")).getDisco(rs.getInt("id_disco")));
+                        setDisco(new DiscoDAO(rs.getInt("id_disco")));
                         return true;
                     }
                 }
@@ -128,7 +129,7 @@ public class CancionDAO extends Cancion implements ICancionDAO {
                           rs.getInt("duracion"),
                           rs.getString("genero"),
                           rs.getInt("n_reproducciones"),
-                          new DiscoDAO(rs.getInt("id_disco")).getDisco(rs.getInt("id_disco"))
+                          new DiscoDAO(rs.getInt("id_disco"))
                         );
                         result.add(song);
                     }
@@ -226,7 +227,7 @@ public class CancionDAO extends Cancion implements ICancionDAO {
                                 rs.getInt("duracion"),
                                 rs.getString("genero"),
                                 rs.getInt("n_reproducciones"),
-                                new DiscoDAO(rs.getInt("id_disco")).getDisco(rs.getInt("id_disco"))
+                                new DiscoDAO(rs.getInt("id_disco"))
                         );
                         result.add(song);
                     }
@@ -242,32 +243,35 @@ public class CancionDAO extends Cancion implements ICancionDAO {
     }
 
     /**
-     * Method that gets the lists in which a Cancion is on
-     * @return List<Lista> | null
-     * If dont return null, success
+     * Method to get all Canciones on Disco
+     * @param idList: int
+     * @return List<Cancion> | null
+     * if dont return null, success
      */
-    public List<Lista> getListOfCancion(){
+    public List<Cancion> getCancionesByList(int idList){
         Connection conn = MariaDBConnection.getConnection();
         if(conn == null) return null;
-        List<Lista> result = new ArrayList<>();
+        List<Cancion> result = new ArrayList<>();
 
-        try(PreparedStatement ps = conn.prepareStatement(SELECTLISTOFCANCION)){
-            ps.setInt(1, getId());
-
+        try(PreparedStatement ps = conn.prepareStatement(SELECTSONGBYLIST)){
+            ps.setInt(1, idList);
             if(ps.execute()){
                 try(ResultSet rs = ps.getResultSet()){
                     while(rs.next()){
-                        Lista list = new Lista(
+                        Cancion song = new Cancion(
                                 rs.getInt("id"),
                                 rs.getString("nombre"),
-                                new UsuarioDAO(rs.getInt("id_user")),
-                                rs.getString("descripcion")
+                                rs.getInt("duracion"),
+                                rs.getString("genero"),
+                                rs.getInt("nReproducciones"),
+                                new DiscoDAO(rs.getInt("id_disco")
                         );
-                        result.add(list);
+                        result.add(song);
                     }
                 }
             }
-        }catch (SQLException e ){
+
+        }catch (SQLException e){
             e.printStackTrace();
             return null;
         }

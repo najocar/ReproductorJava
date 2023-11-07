@@ -7,7 +7,7 @@ import java.util.List;
 public interface IUsuarioDAO {
     boolean getUsuario(int id);
     boolean getUsuario(String name);
-    List<Usuario> getAllUsuarios();
-    boolean saveUsuario(Usuario usuario);
-    boolean deleteUsuario(Usuario usuario);
+//    static List<Usuario> getAllUsuarios()
+    boolean saveUsuario();
+    boolean deleteUsuario();
 }

@@ -120,28 +120,44 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
         return result;
     }
 
-
     @Override
     public boolean saveDisco(Disco disco) {
         Connection conn = MariaDBConnection.getConnection();
         if (conn == null) return false;
-        try (PreparedStatement ps = conn.prepareStatement(INSERT)) {
-            ps.setString(1, disco.getName());
-
-            // Obtener el ID del artista desde el objeto Artista
-            int artistaId = disco.getArtista().getId();
-            ps.setInt(2, artistaId);
-
-            ps.setDate(3, new java.sql.Date(disco.getFecha().getTime()));
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected > 0) {
-                return true;
+        try {
+            // Verificar si el disco ya existe en la base de datos
+            if (getDisco(disco.getName())) {
+                // El disco existe, realizar una actualización
+                try (PreparedStatement ps = conn.prepareStatement(UPDATE)) {
+                    ps.setString(1, disco.getName());
+                    int artistaId = disco.getArtista().getId();
+                    ps.setInt(2, artistaId);
+                    ps.setDate(3, new java.sql.Date(disco.getFecha().getTime()));
+                    ps.setString(4, disco.getName());  // Usar el nombre para identificar el disco a actualizar
+                    int rowsAffected = ps.executeUpdate();
+                    if (rowsAffected > 0) {
+                        return true;
+                    }
+                }
+            } else {
+                // El disco no existe, realizar una inserción
+                try (PreparedStatement ps = conn.prepareStatement(INSERT)) {
+                    ps.setString(1, disco.getName());
+                    int artistaId = disco.getArtista().getId();
+                    ps.setInt(2, artistaId);
+                    ps.setDate(3, new java.sql.Date(disco.getFecha().getTime()));
+                    int rowsAffected = ps.executeUpdate();
+                    if (rowsAffected > 0) {
+                        return true;
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
+
 
 
     @Override

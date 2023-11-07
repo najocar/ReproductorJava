@@ -6,6 +6,7 @@ import com.group1.reproductorjava.model.Entity.Cancion;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class Disco {
     private int id;
@@ -90,6 +91,19 @@ public class Disco {
                 ", artista=" + artista +
                 ", canciones=" + canciones +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Disco disco = (Disco) o;
+        return id == disco.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
 

@@ -14,13 +14,13 @@ import java.util.Date;
 import java.util.List;
 
 public class DiscoDAO implements IDiscoDAO {
-    private final static String INSERT = "INSERT INTO disco (nombre, artista_id, fecha) VALUES (?, ?, ?)";
-    private final static String UPDATE = "UPDATE disco SET nombre = ?, artista_id = ?, fecha = ? WHERE id = ?";
+    private final static String INSERT = "INSERT INTO disco (nombre, id_artista, fecha) VALUES (?, ?, ?)";
+    private final static String UPDATE = "UPDATE disco SET nombre = ?, id_artista = ?, fecha = ? WHERE id = ?";
     private final static String DELETE = "DELETE FROM disco WHERE id = ?";
-    private final static String SELECT_BY_ID = "SELECT id, nombre, artista_id, fecha FROM disco WHERE id = ?";
-    private final static String SELECT_BY_NAME = "SELECT id, nombre, artista_id, fecha FROM disco WHERE nombre = ?";
-    private final static String SELECT_ALL = "SELECT id, nombre, artista_id, fecha FROM disco";
-    private final static String SELECT_BY_ARTISTA = "SELECT id, nombre, artista_id, fecha FROM disco WHERE artista_id = ?";
+    private final static String SELECT_BY_ID = "SELECT id, nombre, id_artista, fecha FROM disco WHERE id = ?";
+    private final static String SELECT_BY_NAME = "SELECT id, nombre, id_artista, fecha FROM disco WHERE nombre = ?";
+    private final static String SELECT_ALL = "SELECT id, nombre, id_artista, fecha FROM disco";
+    private final static String SELECT_BY_ARTISTA = "SELECT id, nombre, id_artista, foto, fecha FROM disco WHERE id_artista = ?";
 
     @Override
     public boolean getDisco(int id) {
@@ -35,7 +35,7 @@ public class DiscoDAO implements IDiscoDAO {
                     disco.setName(rs.getString("nombre"));
 
                     // Obtener un objeto Artista a partir del artista_id
-                    int artistaId = rs.getInt("artista_id");
+                    int artistaId = rs.getInt("id_artista");
                     ArtistaDAO artistaDAO = new ArtistaDAO(); // Instancia de la implementación de IArtistaDAO
                     Artista artista = artistaDAO.getArtista(artistaId);
 
@@ -63,7 +63,7 @@ public class DiscoDAO implements IDiscoDAO {
                     disco.setName(rs.getString("nombre"));
 
                     // Obtener un objeto Artista a partir del artista_id
-                    int artistaId = rs.getInt("artista_id");
+                    int artistaId = rs.getInt("id_artista");
                     ArtistaDAO artistaDAO = new ArtistaDAO(); // Instancia de la implementación de IArtistaDAO
                     Artista artista = artistaDAO.getArtista(artistaId);
 
@@ -91,7 +91,7 @@ public class DiscoDAO implements IDiscoDAO {
                     disco.setName(rs.getString("nombre"));
 
                     // Obtener un objeto Artista a partir del artista_id
-                    int artistaId = rs.getInt("artista_id");
+                    int artistaId = rs.getInt("id_artista");
                     ArtistaDAO artistaDAO = new ArtistaDAO(); // Instancia de la implementación de IArtistaDAO
                     Artista artista = artistaDAO.getArtista(artistaId);
 
@@ -146,31 +146,31 @@ public class DiscoDAO implements IDiscoDAO {
         return false;
     }
 
-    public List<Disco> getAllDiscosByArtista(int artistaId) {
+    public static List<Disco> getAllDiscosByArtista(Artista a) {
+        List<Disco> result =new ArrayList<Disco>();
         Connection conn = MariaDBConnection.getConnection();
-        if (conn == null) return null;
-        List<Disco> result = new ArrayList<>();
-        try (PreparedStatement ps = conn.prepareStatement(SELECT_BY_ARTISTA)) {
-            ps.setInt(1, artistaId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Disco disco = new Disco();
-                    disco.setId(rs.getInt("id"));
-                    disco.setName(rs.getString("nombre"));
-
-                    // Obtener un objeto Artista a partir del artista_id
-                    artistaId = rs.getInt("artista_id");
-                    ArtistaDAO artistaDAO = new ArtistaDAO(); // Instancia de la implementación de IArtistaDAO
-                    Artista artista = artistaDAO.getArtista(artistaId);
-
-                    disco.setArtista(artista);
-                    disco.setFecha(rs.getDate("fecha"));
-                    result.add(disco);
+        if(conn !=null){
+            PreparedStatement ps;
+            try{
+                ps= conn.prepareStatement(SELECT_BY_ARTISTA);
+                ps.setInt(1,a.getId());
+                if(ps.execute()){
+                    ResultSet rs =ps.getResultSet();
+                    while (rs.next()){
+                        Disco d=new Disco(rs.getInt("id"));
+                        rs.getString("nombre");
+                        d.setArtista(new Artista(rs.getInt("id_artista")));
+                        rs.getDate("fecha");
+                        rs.getString("foto");
+                        result.add(d);
+                    }
+                    rs.close();
                 }
+                ps.close();
+            }catch (SQLException e){
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return result;
+        return  result;
     }
 }

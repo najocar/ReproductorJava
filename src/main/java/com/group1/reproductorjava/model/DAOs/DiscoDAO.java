@@ -20,6 +20,7 @@ public class DiscoDAO implements IDiscoDAO {
     private final static String SELECT_BY_ID = "SELECT id, nombre, artista_id, fecha FROM disco WHERE id = ?";
     private final static String SELECT_BY_NAME = "SELECT id, nombre, artista_id, fecha FROM disco WHERE nombre = ?";
     private final static String SELECT_ALL = "SELECT id, nombre, artista_id, fecha FROM disco";
+    private final static String SELECT_BY_ARTISTA = "SELECT id, nombre, artista_id, fecha FROM disco WHERE artista_id = ?";
 
     @Override
     public boolean getDisco(int id) {
@@ -143,5 +144,33 @@ public class DiscoDAO implements IDiscoDAO {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<Disco> getAllDiscosByArtista(int artistaId) {
+        Connection conn = MariaDBConnection.getConnection();
+        if (conn == null) return null;
+        List<Disco> result = new ArrayList<>();
+        try (PreparedStatement ps = conn.prepareStatement(SELECT_BY_ARTISTA)) {
+            ps.setInt(1, artistaId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Disco disco = new Disco();
+                    disco.setId(rs.getInt("id"));
+                    disco.setName(rs.getString("nombre"));
+
+                    // Obtener un objeto Artista a partir del artista_id
+                    artistaId = rs.getInt("artista_id");
+                    ArtistaDAO artistaDAO = new ArtistaDAO(); // Instancia de la implementación de IArtistaDAO
+                    Artista artista = artistaDAO.getArtista(artistaId);
+
+                    disco.setArtista(artista);
+                    disco.setFecha(rs.getDate("fecha"));
+                    result.add(disco);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

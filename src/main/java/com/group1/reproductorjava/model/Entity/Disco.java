@@ -1,5 +1,6 @@
 package com.group1.reproductorjava.model.Entity;
 
+import com.group1.reproductorjava.model.DAOs.CancionDAO;
 import com.group1.reproductorjava.model.Entity.Artista;
 import com.group1.reproductorjava.model.Entity.Cancion;
 
@@ -68,6 +69,10 @@ public class Disco {
     }
 
     public List<Cancion> getCanciones() {
+        if(canciones == null){
+            List<Cancion> aux = CancionDAO.getCancionesByList(getId());
+            if(aux != null) canciones = aux;
+        }
         return canciones;
     }
 

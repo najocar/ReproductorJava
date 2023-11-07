@@ -6,6 +6,7 @@ import java.util.List;
 import com.group1.reproductorjava.model.Connection.MariaDBConnection;
 import com.group1.reproductorjava.model.Entity.Artista;
 import com.group1.reproductorjava.model.Entity.Disco;
+import com.group1.reproductorjava.model.DAOs.DiscoDAO;
 import com.group1.reproductorjava.model.interfaces.IArtistaDAO;
 
 public class ArtistaDAO extends Artista implements IArtistaDAO {
@@ -172,13 +173,12 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
         return artistas;
     }
 
-   /* public List<Disco>getDiscos(){
-        if(discos!=null){
-            return super.getDiscos();
-        } else {
-            DiscoDAO.getByArtista(getId());
+   public List<Disco>getDiscos(){
+        if(super.getDiscos()==null){
+            setDiscos(DiscoDAO.getAllDiscosByArtista(this));
         }
         return super.getDiscos();
-    }*/
+   }
+
 
 }

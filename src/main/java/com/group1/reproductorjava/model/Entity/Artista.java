@@ -22,6 +22,10 @@ public class Artista {
         this(0,"","","");
     }
 
+    public Artista(int id) {
+        this.id=id;
+    }
+
     public int getId() {
         return id;
     }

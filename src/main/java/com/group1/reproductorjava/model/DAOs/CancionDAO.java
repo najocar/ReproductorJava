@@ -22,6 +22,7 @@ public class CancionDAO extends Cancion implements ICancionDAO {
     private final static String INSERT = "INSERT INTO cancion (nombre, duracion, genero, n_reproducciones, id_disco) VALUES (?, ?, ?, ?, ?)";
     private final static String DELETE = "DELETE FROM cancion WHERE id = ?";
     private final static String SELECTSONGBYLIST = "SELECT id, nombre, duracion, genero, n_reproducciones, id_disco FROM cancion WHERE id_disco = ?";
+    private final static String UPDATE = "UPDATE cancion SET nombre = ?, duracion = ?, genero = ?, n_reproducciones = ?, id_disco = ? WHERE id = ?";
 
 
     public CancionDAO(int id){
@@ -152,7 +153,9 @@ public class CancionDAO extends Cancion implements ICancionDAO {
      */
     @Override
     public boolean saveCancion() {
-        if(getId() != -1)return false;
+        if(getId() != -1){
+            return updateCancion();
+        }
         else{
             Connection conn = MariaDBConnection.getConnection();
             if(conn == null) return false;
@@ -279,4 +282,31 @@ public class CancionDAO extends Cancion implements ICancionDAO {
         return result;
     }
 
+    /**
+     * Method to update Cancion
+     * @return boolean
+     * true if success
+     * params to update (nombre, duracion, genero, nReproducciones, id_disco)
+     */
+    public boolean updateCancion(){
+        if(getId() == -1) return false;
+        Connection conn = MariaDBConnection.getConnection();
+        if(conn == null) return false;
+
+        try(PreparedStatement ps = conn.prepareStatement(UPDATE)){
+            ps.setString(1, getName());
+            ps.setInt(2, getDuration());
+            ps.setString(3, getGender());
+            ps.setInt(4, getnReproductions());
+            ps.setInt(5, getDisco().getId());
+            ps.setInt(6, getId());
+
+            if(ps.executeUpdate() == 1) return true;
+            return false;
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

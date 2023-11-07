@@ -20,6 +20,24 @@ public class ComentarioDAO extends Comentario implements IComentarioDAO {
     private final static String INSERT = "INSERT INTO comentario (fecha, mensaje, id_user, id_lista) VALUES (?, ?, ?, ?) ";
     private final static String DELETE = "DELETE FROM comentario WHERE id = ?";
 
+    public ComentarioDAO(int id){
+        getComentario(id);
+    }
+
+    public ComentarioDAO(int id, LocalDate date, String message, Usuario user, Lista playlist){
+        super(id, date, message, user, playlist);
+    }
+
+    public ComentarioDAO(Comentario c){
+        super(c.getId(), c.getDate(), c.getMessage(), c.getUsuario(), c.getLista());
+    }
+
+    /**
+     * Method to get Comentario by Id
+     * @param id: int
+     * @return boolean
+     * true if success
+     */
     @Override
     public boolean getComentario(int id) {
         Connection conn = MariaDBConnection.getConnection();
@@ -49,6 +67,11 @@ public class ComentarioDAO extends Comentario implements IComentarioDAO {
         return false;
     }
 
+    /**
+     * Static Method to get all Comentario
+     * @return List<Comentario> | null
+     * if dont return null, success
+     */
     public static List<Comentario> getAllComentarios(){
         Connection conn = MariaDBConnection.getConnection();
         if(conn == null) return null;
@@ -79,6 +102,11 @@ public class ComentarioDAO extends Comentario implements IComentarioDAO {
         return result;
     }
 
+    /**
+     * Method to save Comentario
+     * @return boolean
+     * true if success
+     */
     @Override
     public boolean saveComentario() {
         if(getId() != -1) return false;
@@ -103,6 +131,11 @@ public class ComentarioDAO extends Comentario implements IComentarioDAO {
 
     }
 
+    /**
+     * Method to remove Comentario
+     * @return boolean
+     * true if success
+     */
     @Override
     public boolean deleteComentario() {
         Connection conn = MariaDBConnection.getConnection();
@@ -118,5 +151,79 @@ public class ComentarioDAO extends Comentario implements IComentarioDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    /**
+     * Static Method to get all Comentario on User
+     * @param idUser: int
+     * @return List<Comentario> | null
+     * if dont return null, success
+     */
+    public static List<Comentario> getComentariosByUsuario(int idUser){
+        Connection conn = MariaDBConnection.getConnection();
+        if(conn == null) return null;
+        List<Comentario> result = new ArrayList<>();
+
+        try(PreparedStatement ps = conn.prepareStatement(SELECTBYOWNER)){
+            ps.setInt(1, idUser);
+
+            if(ps.execute()){
+                try(ResultSet rs = ps.getResultSet()){
+                    while(rs.next()){
+                        Comentario aux = new Comentario(
+                                rs.getInt("id"),
+                                rs.getDate("fecha").toLocalDate(),
+                                rs.getString("mensaje"),
+                                new Usuario(rs.getInt("id_user")),
+                                new Lista(rs.getInt("id_lista"))
+                        );
+                        result.add(aux);
+                    }
+                }
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return result;
+    }
+
+    /**
+     * Static Method to get all Comentario on Playlist (List)
+     * @param idLista: int
+     * @return List<Comentario> | null
+     * if dont return null, success
+     */
+    public static List<Comentario> getComentariosByLista(int idLista){
+        Connection conn = MariaDBConnection.getConnection();
+        if(conn == null) return null;
+        List<Comentario> result = new ArrayList<>();
+
+        try(PreparedStatement ps = conn.prepareStatement(SELECTBYLIST)){
+            ps.setInt(1, idLista);
+
+            if(ps.execute()){
+                try(ResultSet rs = ps.getResultSet()){
+                    while(rs.next()){
+                        Comentario aux = new Comentario(
+                                rs.getInt("id"),
+                                rs.getDate("fecha").toLocalDate(),
+                                rs.getString("mensaje"),
+                                new Usuario(rs.getInt("id_user")),
+                                new Lista(rs.getInt("id_lista"))
+                        );
+                        result.add(aux);
+                    }
+                }
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return result;
     }
 }

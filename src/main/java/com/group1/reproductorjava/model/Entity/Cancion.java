@@ -80,14 +80,6 @@ public class Cancion {
         this.disco = disco;
     }
 
-    public List<Lista> getListas() {
-        if(listas == null){
-            List<Lista> aux = new CancionDAO(getId()).getListOfCancion();
-            if(aux != null) listas = aux;
-        }
-        return listas;
-    }
-
     public void setListas(List<Lista> listas) {
         this.listas = listas;
     }

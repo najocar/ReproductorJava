@@ -20,6 +20,7 @@ public class UsuarioDAO extends Usuario implements IUsuarioDAO {
     private final static String INSERT = "INSERT INTO user (nombre, correo, foto, rol) VALUES (?,?,?,?)";
     private final static String DELETE = "DELETE FROM user WHERE id = ?";
     private final static String SELECTLISTBYUSEROWNER = "SELECT id, nombre, id_user, description FROM lista WHERE id_user = ?";
+    private final static String UPDATE = "UPDATE user SET nombre = ?, correo = ?, foto = ? WHERE id = ?";
 
     public UsuarioDAO(int id){
         getUsuario(id);
@@ -144,7 +145,9 @@ public class UsuarioDAO extends Usuario implements IUsuarioDAO {
      */
     @Override
     public boolean saveUsuario() {
-        if(getId() != -1)return false;
+        if(getId() != -1){
+            return updateUsuario();
+        }
         else{
             Connection conn = MariaDBConnection.getConnection();
             if(conn == null) return false;
@@ -218,4 +221,26 @@ public class UsuarioDAO extends Usuario implements IUsuarioDAO {
         return result;
     }
 
+    /**
+     * Method to update Usuario
+     * @return boolean
+     * true if success
+     * params to update (nombre, correo, foto)
+     */
+    public boolean updateUsuario(){
+        if(getId() == 1) return false;
+        Connection conn = MariaDBConnection.getConnection();
+        if(conn == null) return false;
+
+        try(PreparedStatement ps = conn.prepareStatement(UPDATE)){
+            ps.setString(1, getName());
+            ps.setString(2, getEmail());
+            ps.setString(3, getPhoto());
+            if(ps.executeUpdate() == 1) return true;
+            return false;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

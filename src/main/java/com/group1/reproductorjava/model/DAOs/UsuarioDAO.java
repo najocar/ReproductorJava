@@ -206,7 +206,7 @@ public class UsuarioDAO extends Usuario implements IUsuarioDAO {
                         Lista list = new Lista(
                                 rs.getInt("id"),
                                 rs.getString("name"),
-                                getUsuario(rs.getInt("id_user")),
+                                new UsuarioDAO(rs.getInt("id_user")),
                                 rs.getString("descripcion")
                         );
                         result.add(list);

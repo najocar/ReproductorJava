@@ -42,20 +42,27 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
         if (conn == null) return false;
         try (PreparedStatement ps = conn.prepareStatement(SELECT_BY_ID)) {
             ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    Disco disco = new Disco();
-                    disco.setId(rs.getInt("id"));
-                    disco.setName(rs.getString("nombre"));
+            if (ps.execute()) {
+                try (ResultSet rs = ps.getResultSet()) {
+                    if (rs.next()) {
+                        Disco disco = new Disco();
+                        disco.setId(rs.getInt("id"));
+                        disco.setName(rs.getString("nombre"));
 
-                    // Obtener un objeto Artista a partir del artista_id
-                    int artistaId = rs.getInt("id_artista");
-                    ArtistaDAO artistaDAO = new ArtistaDAO(); // Instancia de la implementación de IArtistaDAO
-                    Artista artista = artistaDAO.getArtista(artistaId);
+                        // Obtener un objeto Artista a partir del artista_id
+                        int artistaId = rs.getInt("artista_id");
+                        ArtistaDAO artistaDAO = new ArtistaDAO(); // Instancia de la implementación de IArtistaDAO
 
-                    disco.setArtista(artista);
-                    disco.setFecha(rs.getDate("fecha"));
-                    return true;
+                        // Intenta obtener el objeto Artista
+                        if (artistaDAO.getArtista(artistaId)) {
+                            Artista artista = new Artista();
+                            // Asigna las propiedades del artista aquí
+                            disco.setArtista(artista);
+                            disco.setFecha(rs.getDate("fecha"));
+                            disco.setPhoto(rs.getString("foto"));
+                            return true;
+                        }
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -64,26 +71,34 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
         return false;
     }
 
+
     @Override
     public boolean getDisco(String name) {
         Connection conn = MariaDBConnection.getConnection();
         if (conn == null) return false;
         try (PreparedStatement ps = conn.prepareStatement(SELECT_BY_NAME)) {
             ps.setString(1, name);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    Disco disco = new Disco();
-                    disco.setId(rs.getInt("id"));
-                    disco.setName(rs.getString("nombre"));
+            if (ps.execute()) {
+                try (ResultSet rs = ps.getResultSet()) {
+                    if (rs.next()) {
+                        Disco disco = new Disco();
+                        disco.setId(rs.getInt("id"));
+                        disco.setName(rs.getString("nombre"));
 
-                    // Obtener un objeto Artista a partir del artista_id
-                    int artistaId = rs.getInt("id_artista");
-                    ArtistaDAO artistaDAO = new ArtistaDAO(); // Instancia de la implementación de IArtistaDAO
-                    Artista artista = artistaDAO.getArtista(artistaId);
+                        // Obtener un objeto Artista a partir del artista_id
+                        int artistaId = rs.getInt("id_artista");
+                        ArtistaDAO artistaDAO = new ArtistaDAO(); // Instancia de la implementación de IArtistaDAO
 
-                    disco.setArtista(artista);
-                    disco.setFecha(rs.getDate("fecha"));
-                    return true;
+                        // Intenta obtener el objeto Artista
+                        if (artistaDAO.getArtista(artistaId)) {
+                            Artista artista = new Artista();
+                            // Asigna las propiedades del artista aquí
+                            disco.setArtista(artista);
+                            disco.setFecha(rs.getDate("fecha"));
+                            disco.setPhoto(rs.getString("foto"));
+                            return true;
+                        }
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -107,11 +122,16 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
                     // Obtener un objeto Artista a partir del artista_id
                     int artistaId = rs.getInt("id_artista");
                     ArtistaDAO artistaDAO = new ArtistaDAO(); // Instancia de la implementación de IArtistaDAO
-                    Artista artista = artistaDAO.getArtista(artistaId);
 
-                    disco.setArtista(artista);
-                    disco.setFecha(rs.getDate("fecha"));
-                    result.add(disco);
+                    // Intenta obtener el objeto Artista
+                    if (artistaDAO.getArtista(artistaId)) {
+                        Artista artista = new Artista();
+                        // Asigna las propiedades del artista aquí
+                        disco.setArtista(artista);
+                        disco.setFecha(rs.getDate("fecha"));
+                        disco.setPhoto(rs.getString("foto"));
+                        result.add(disco);
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -158,8 +178,6 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
         return false;
     }
 
-
-
     @Override
     public boolean deleteDisco(Disco disco) {
         Connection conn = MariaDBConnection.getConnection();
@@ -187,7 +205,8 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
                 if(ps.execute()){
                     ResultSet rs =ps.getResultSet();
                     while (rs.next()){
-                        Disco d=new Disco(rs.getInt("id"));
+                        Disco d = new Disco();
+                        rs.getInt("id");
                         rs.getString("nombre");
                         d.setArtista(new Artista(rs.getInt("id_artista")));
                         rs.getDate("fecha");

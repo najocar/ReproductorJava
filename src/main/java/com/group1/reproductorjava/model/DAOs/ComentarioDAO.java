@@ -13,11 +13,11 @@ import java.util.List;
 
 public class ComentarioDAO extends Comentario implements IComentarioDAO {
 
-    private final static String SELECTBYID = "SELECT id, fecha, mensaje, id_user, id_lista FROM comentario WHERE id = ?";
-    private final static String SELECTALL = "SELECT id, fecha, mensaje, id_user, id_lista FROM comentario";
-    private final static String SELECTBYOWNER = "SELECT id, fecha, mensaje, id_user, id_lista FROM comentario WHERE id_usuario = ?";
-    private final static String SELECTBYLIST = "SELECT id, fecha, mensaje, id_user, id_lista FROM comentario WHERE id_lista = ?";
-    private final static String INSERT = "INSERT INTO comentario (fecha, mensaje, id_user, id_lista) VALUES (?, ?, ?, ?) ";
+    private final static String SELECTBYID = "SELECT id, fecha, contenido, id_user, id_lista FROM comentario WHERE id = ?";
+    private final static String SELECTALL = "SELECT id, fecha, contenido, id_user, id_lista FROM comentario";
+    private final static String SELECTBYOWNER = "SELECT id, fecha, contenido, id_user, id_lista FROM comentario WHERE id_usuario = ?";
+    private final static String SELECTBYLIST = "SELECT id, fecha, contenido, id_user, id_lista FROM comentario WHERE id_lista = ?";
+    private final static String INSERT = "INSERT INTO comentario (fecha, contenido, id_user, id_lista) VALUES (?, ?, ?, ?) ";
     private final static String DELETE = "DELETE FROM comentario WHERE id = ?";
 
     public ComentarioDAO(int id){
@@ -51,7 +51,7 @@ public class ComentarioDAO extends Comentario implements IComentarioDAO {
                     if(rs.next()){
                         setId(rs.getInt("id"));
                         setDate(rs.getDate("fecha").toLocalDate());
-                        setMessage(rs.getString("mensaje"));
+                        setMessage(rs.getString("contenido"));
                         setUsuario(new UsuarioDAO(rs.getInt("id_user")));
                         setLista(new ListaDAO(rs.getInt("id_lista")));
                         return true;
@@ -85,7 +85,7 @@ public class ComentarioDAO extends Comentario implements IComentarioDAO {
                         Comentario aux = new Comentario(
                                 rs.getInt("id"),
                                 rs.getDate("fecha").toLocalDate(),
-                                rs.getString("mensaje"),
+                                rs.getString("contenido"),
                                 new Usuario(rs.getInt("id_user")),
                                 new Lista(rs.getInt("id_lista"))
                         );
@@ -173,7 +173,7 @@ public class ComentarioDAO extends Comentario implements IComentarioDAO {
                         Comentario aux = new Comentario(
                                 rs.getInt("id"),
                                 rs.getDate("fecha").toLocalDate(),
-                                rs.getString("mensaje"),
+                                rs.getString("contenido"),
                                 new Usuario(rs.getInt("id_user")),
                                 new Lista(rs.getInt("id_lista"))
                         );
@@ -210,7 +210,7 @@ public class ComentarioDAO extends Comentario implements IComentarioDAO {
                         Comentario aux = new Comentario(
                                 rs.getInt("id"),
                                 rs.getDate("fecha").toLocalDate(),
-                                rs.getString("mensaje"),
+                                rs.getString("contenido"),
                                 new Usuario(rs.getInt("id_user")),
                                 new Lista(rs.getInt("id_lista"))
                         );

@@ -10,20 +10,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class DiscoDAO extends Disco implements IDiscoDAO {
-    private final static String INSERT = "INSERT INTO disco (nombre, id_artista, fecha) VALUES (?, ?, ?)";
-    private final static String UPDATE = "UPDATE disco SET nombre = ?, id_artista = ?, fecha = ? WHERE id = ?";
+    private final static String INSERT = "INSERT INTO disco (nombre, id_artista, fecha, foto) VALUES (?, ?, ?, ?)";
+    private final static String UPDATE = "UPDATE disco SET nombre = ?, id_artista = ?, fecha = ?, foto = ? WHERE id = ?";
     private final static String DELETE = "DELETE FROM disco WHERE id = ?";
-    private final static String SELECT_BY_ID = "SELECT id, nombre, id_artista, fecha FROM disco WHERE id = ?";
-    private final static String SELECT_BY_NAME = "SELECT id, nombre, id_artista, fecha FROM disco WHERE nombre = ?";
-    private final static String SELECT_ALL = "SELECT id, nombre, id_artista, fecha FROM disco";
+    private final static String SELECT_BY_ID = "SELECT id, nombre, id_artista, fecha, foto FROM disco WHERE id = ?";
+    private final static String SELECT_BY_NAME = "SELECT id, nombre, id_artista, fecha, foto FROM disco WHERE nombre = ?";
+    private final static String SELECT_ALL = "SELECT id, nombre, id_artista, fecha, foto FROM disco";
     private final static String SELECT_BY_ARTISTA = "SELECT id, nombre, id_artista, foto, fecha FROM disco WHERE id_artista = ?";
 
-    public DiscoDAO(int id, String nombre, Date fecha, String photo, Artista artista, List<Cancion> canciones){
+    public DiscoDAO(int id, String nombre, LocalDate fecha, String photo, Artista artista, List<Cancion> canciones){
 
         super(id, nombre, fecha, photo, artista, canciones);
     }
@@ -50,7 +51,7 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
                         disco.setName(rs.getString("nombre"));
 
                         // Obtener un objeto Artista a partir del artista_id
-                        int artistaId = rs.getInt("artista_id");
+                        int artistaId = rs.getInt("id_artista");
                         ArtistaDAO artistaDAO = new ArtistaDAO(); // Instancia de la implementación de IArtistaDAO
 
                         // Intenta obtener el objeto Artista
@@ -58,7 +59,7 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
                             Artista artista = new Artista();
                             // Asigna las propiedades del artista aquí
                             disco.setArtista(artista);
-                            disco.setFecha(rs.getDate("fecha"));
+                            disco.setFecha(rs.getDate("fecha").toLocalDate());
                             disco.setPhoto(rs.getString("foto"));
                             return true;
                         }
@@ -94,7 +95,7 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
                             Artista artista = new Artista();
                             // Asigna las propiedades del artista aquí
                             disco.setArtista(artista);
-                            disco.setFecha(rs.getDate("fecha"));
+                            disco.setFecha(rs.getDate("fecha").toLocalDate());
                             disco.setPhoto(rs.getString("foto"));
                             return true;
                         }
@@ -128,7 +129,7 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
                         Artista artista = new Artista();
                         // Asigna las propiedades del artista aquí
                         disco.setArtista(artista);
-                        disco.setFecha(rs.getDate("fecha"));
+                        disco.setFecha(rs.getDate("fecha").toLocalDate());
                         disco.setPhoto(rs.getString("foto"));
                         result.add(disco);
                     }
@@ -141,19 +142,19 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
     }
 
     @Override
-    public boolean saveDisco(Disco disco) {
+    public boolean saveDisco() {
         Connection conn = MariaDBConnection.getConnection();
         if (conn == null) return false;
         try {
             // Verificar si el disco ya existe en la base de datos
-            if (getDisco(disco.getName())) {
+            if (getDisco(getName())) {
                 // El disco existe, realizar una actualización
                 try (PreparedStatement ps = conn.prepareStatement(UPDATE)) {
-                    ps.setString(1, disco.getName());
-                    int artistaId = disco.getArtista().getId();
+                    ps.setString(1, getName());
+                    int artistaId = getArtista().getId();
                     ps.setInt(2, artistaId);
-                    ps.setDate(3, new java.sql.Date(disco.getFecha().getTime()));
-                    ps.setString(4, disco.getName());  // Usar el nombre para identificar el disco a actualizar
+                    ps.setDate(3, java.sql.Date.valueOf(getFecha()));
+                    ps.setString(4, getName());  // Usar el nombre para identificar el disco a actualizar
                     int rowsAffected = ps.executeUpdate();
                     if (rowsAffected > 0) {
                         return true;
@@ -162,10 +163,10 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
             } else {
                 // El disco no existe, realizar una inserción
                 try (PreparedStatement ps = conn.prepareStatement(INSERT)) {
-                    ps.setString(1, disco.getName());
-                    int artistaId = disco.getArtista().getId();
+                    ps.setString(1, getName());
+                    int artistaId = getArtista().getId();
                     ps.setInt(2, artistaId);
-                    ps.setDate(3, new java.sql.Date(disco.getFecha().getTime()));
+                    ps.setDate(3, java.sql.Date.valueOf(getFecha()));
                     int rowsAffected = ps.executeUpdate();
                     if (rowsAffected > 0) {
                         return true;
@@ -179,11 +180,11 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
     }
 
     @Override
-    public boolean deleteDisco(Disco disco) {
+    public boolean deleteDisco() {
         Connection conn = MariaDBConnection.getConnection();
         if (conn == null) return false;
         try (PreparedStatement ps = conn.prepareStatement(DELETE)) {
-            ps.setInt(1, disco.getId());
+            ps.setInt(1, getId());
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
                 return true;

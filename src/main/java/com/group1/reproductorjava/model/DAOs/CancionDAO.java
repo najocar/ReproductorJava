@@ -21,7 +21,7 @@ public class CancionDAO extends Cancion implements ICancionDAO {
     private final static String SELECTBYGENDER = "SELECT id, nombre, duracion, genero, n_reproducciones, id_disco FROM cancion WHERE genero LIKE ?";
     private final static String INSERT = "INSERT INTO cancion (nombre, duracion, genero, n_reproducciones, id_disco) VALUES (?, ?, ?, ?, ?)";
     private final static String DELETE = "DELETE FROM cancion WHERE id = ?";
-    private final static String SELECTSONGBYLIST = "SELECT id, nombre, duracion, genero, n_reproducciones, id_disco FROM cancion WHERE id_disco = ?";
+    private final static String SELECTSONGBYLIST = "SELECT c.id, c.nombre, c.duracion, c.genero, c.n_reproducciones, c.id_disco FROM cancion c JOIN cancion_lista cl ON c.id = cl.id_cancion WHERE cl.id_lista = ?";
     private final static String UPDATE = "UPDATE cancion SET nombre = ?, duracion = ?, genero = ?, n_reproducciones = ?, id_disco = ? WHERE id = ?";
 
 
@@ -33,8 +33,8 @@ public class CancionDAO extends Cancion implements ICancionDAO {
         super(song.getId(), song.getName(), song.getDuration(), song.getGender(), song.getnReproductions(), song.getDisco());
     }
 
-    public CancionDAO(int id, String nombre, int duration, String gender, int nReproducciones, Disco disco){
-        super(id, nombre, duration, gender, nReproducciones, disco);
+    public CancionDAO(int id, String nombre, int duration, String gender, int nReproductions, Disco disco){
+        super(id, nombre, duration, gender, nReproductions, disco);
     }
 
     /**
@@ -266,7 +266,7 @@ public class CancionDAO extends Cancion implements ICancionDAO {
                                 rs.getString("nombre"),
                                 rs.getInt("duracion"),
                                 rs.getString("genero"),
-                                rs.getInt("nReproducciones"),
+                                rs.getInt("n_reproducciones"),
                                 new DiscoDAO(rs.getInt("id_disco"))
                         );
                         result.add(song);

@@ -4,6 +4,7 @@ import com.group1.reproductorjava.model.DAOs.CancionDAO;
 import com.group1.reproductorjava.model.Entity.Artista;
 import com.group1.reproductorjava.model.Entity.Cancion;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -11,7 +12,7 @@ import java.util.Objects;
 public class Disco {
     private int id;
     private String nombre;
-    private Date fecha;
+    private LocalDate fecha;
     private String photo;
     private Artista artista;
     private List<Cancion> canciones;
@@ -20,7 +21,7 @@ public class Disco {
         // Constructor vacío
     }
 
-    public Disco(int id, String nombre, Date fecha, String photo, Artista artista, List<Cancion> canciones) {
+    public Disco(int id, String nombre, LocalDate fecha, String photo, Artista artista, List<Cancion> canciones) {
         this.id = id;
         this.nombre = nombre;
         this.fecha = fecha;
@@ -45,11 +46,11 @@ public class Disco {
         this.nombre = nombre;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 

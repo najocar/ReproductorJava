@@ -16,9 +16,9 @@ public class ListaDAO extends Lista implements IListaDAO {
     private final static String INSERT = "INSERT INTO lista (nombre,id_user,descripcion) VALUES(?,?,?)";
     private final static String UPDATE = "UPDATE lista SET nombre=?,descripcion=? WHERE id=?";
     private final static String DELETE = "DELETE FROM lista WHERE id=?";
-    private final static String SELECTBYID = "SELECT id,nombre,id_user,description FROM lista WHERE id=?";
-    private final static String SELECTALL = "SELECT id,nombre,localizacion,jefe,area,id_sede FROM Complejo";
-    private final static String SELECTBYCREADOR = "SELECT id,nombre,id_user,description FROM user WHERE id_user=?";
+    private final static String SELECTBYID = "SELECT id,nombre,id_user,descripcion FROM lista WHERE id=?";
+    private final static String SELECTALL = "SELECT id,nombre,id_user,descripcion FROM lista";
+    private final static String SELECTBYCREADOR = "SELECT id,nombre,id_user,descripcion FROM user WHERE id_user=?";
     private final static String SAVESONGS = "INSERT INTO cancion_lista (id_lista, id_cancion) VALUES(?,?)";
     private final static String DELETESONGS = "DELETE FROM cancion_lista WHERE id=?";
 
@@ -141,6 +141,7 @@ public class ListaDAO extends Lista implements IListaDAO {
     }
 
     public boolean saveSongRelation(Cancion song) throws SQLException {
+        if (canciones==null) getCanciones();
         canciones.add(song);
         Connection conn = MariaDBConnection.getConnection();
         if (conn == null) return false;
@@ -148,7 +149,6 @@ public class ListaDAO extends Lista implements IListaDAO {
         try (PreparedStatement ps = conn.prepareStatement(SAVESONGS)) {
             ps.setInt(1, this.getId());
             ps.setInt(2, song.getId());
-            ps.setString(3, getDescription());
 
             if (ps.executeUpdate() == 1) {
                 return true;
@@ -183,7 +183,7 @@ public class ListaDAO extends Lista implements IListaDAO {
 
         try (PreparedStatement ps = conn.prepareStatement(UPDATE)) {
             ps.setString(1, getName());
-            ps.setString(3, getDescription());
+            ps.setString(2, getDescription());
             ps.setInt(3, getId());
             if (ps.executeUpdate() == 1) {
                 return true;
@@ -255,6 +255,20 @@ public class ListaDAO extends Lista implements IListaDAO {
             return comentarios.remove(coment);
         return false;
     }
+
+
+    public boolean addCancion(Cancion cancion) {
+        if (!canciones.contains(cancion))
+            return canciones.add(cancion);
+        return false;
+    }
+
+//    @Override
+//    public boolean deleteComment(Comentario coment) {
+//        if (comentarios.contains(coment))
+//            return comentarios.remove(coment);
+//        return false;
+//    }
 
     @Override
     public List<Cancion> getCanciones() {

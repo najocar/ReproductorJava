@@ -79,9 +79,6 @@ public class Cancion {
         this.disco = disco;
     }
 
-    public void setListas(List<Lista> listas) {
-        this.listas = listas;
-    }
 
     @Override
     public boolean equals(Object o) {

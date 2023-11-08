@@ -8,6 +8,6 @@ public interface IDiscoDAO {
     boolean getDisco(int id);
     boolean getDisco(String name);
     List<Disco> getAllDiscos();
-    boolean saveDisco(Disco disco);
-    boolean deleteDisco(Disco disco);
+    boolean saveDisco();
+    boolean deleteDisco();
 }

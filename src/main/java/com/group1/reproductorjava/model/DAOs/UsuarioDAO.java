@@ -4,6 +4,7 @@ import com.group1.reproductorjava.model.Connection.MariaDBConnection;
 import com.group1.reproductorjava.model.Entity.Lista;
 import com.group1.reproductorjava.model.Entity.Usuario;
 import com.group1.reproductorjava.model.interfaces.IUsuarioDAO;
+import com.group1.reproductorjava.utils.LoggerClass;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,6 +22,8 @@ public class UsuarioDAO extends Usuario implements IUsuarioDAO {
     private final static String DELETE = "DELETE FROM user WHERE id = ?";
     private final static String SELECTLISTBYUSEROWNER = "SELECT id, nombre, id_user, description FROM lista WHERE id_user = ?";
     private final static String UPDATE = "UPDATE user SET nombre = ?, correo = ?, foto = ? WHERE id = ?";
+
+    static LoggerClass logger = new LoggerClass(UsuarioDAO.class.getName());
 
     public UsuarioDAO(int id){
         getUsuario(id);
@@ -62,7 +65,8 @@ public class UsuarioDAO extends Usuario implements IUsuarioDAO {
             }
 
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try get Usuario by id");
+            logger.warning(e.getMessage());
             return false;
         }
         return false;
@@ -96,7 +100,8 @@ public class UsuarioDAO extends Usuario implements IUsuarioDAO {
             }
 
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try get Usuario by name");
+            logger.warning(e.getMessage());
             return false;
         }
         return false;
@@ -131,7 +136,8 @@ public class UsuarioDAO extends Usuario implements IUsuarioDAO {
             }
 
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try get all Usuario");
+            logger.warning(e.getMessage());
             return null;
         }
         return result;
@@ -161,7 +167,8 @@ public class UsuarioDAO extends Usuario implements IUsuarioDAO {
                 if(ps.executeUpdate() == 1) return true;
                 return false;
             }catch (SQLException e){
-                e.printStackTrace();
+                logger.warning("Error to try save Usuario");
+                logger.warning(e.getMessage());
                 return false;
             }
         }
@@ -182,7 +189,8 @@ public class UsuarioDAO extends Usuario implements IUsuarioDAO {
             if(ps.executeUpdate()==1) return true;
             return false;
         }catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error to try delete Usuario");
+            logger.warning(e.getMessage());
             return false;
         }
     }
@@ -214,7 +222,8 @@ public class UsuarioDAO extends Usuario implements IUsuarioDAO {
                 }
             }
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try get all Lista on Usuario");
+            logger.warning(e.getMessage());
             return null;
         }
 
@@ -239,7 +248,8 @@ public class UsuarioDAO extends Usuario implements IUsuarioDAO {
             if(ps.executeUpdate() == 1) return true;
             return false;
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try update Usuario");
+            logger.warning(e.getMessage());
             return false;
         }
     }

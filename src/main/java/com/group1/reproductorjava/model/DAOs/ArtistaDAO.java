@@ -8,6 +8,7 @@ import com.group1.reproductorjava.model.Entity.Artista;
 import com.group1.reproductorjava.model.Entity.Disco;
 import com.group1.reproductorjava.model.DAOs.DiscoDAO;
 import com.group1.reproductorjava.model.interfaces.IArtistaDAO;
+import com.group1.reproductorjava.utils.LoggerClass;
 
 public class ArtistaDAO extends Artista implements IArtistaDAO {
 
@@ -18,6 +19,8 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
     private final static String SELECT_BY_ID = "SELECT * FROM artista WHERE id=?";
     private final static String SELECT_ALL = "SELECT * FROM artista";
     private final static String SELECT_BY_NAME = "SELECT * FROM artista WHERE nombre=?";
+
+    static LoggerClass logger = new LoggerClass(ArtistaDAO.class.getName());
 
     public ArtistaDAO(int id) {
         getArtista(id);
@@ -62,7 +65,8 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
 
                 return false;
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.warning("Error to try save Artist");
+                logger.warning(e.getMessage());
                 return false;
             }
         }
@@ -82,7 +86,8 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
             setId(-1);
             return false;
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error to try update Artist");
+            logger.warning(e.getMessage());
             return false;
         }
     }
@@ -97,7 +102,8 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
 
             return ps.executeUpdate() == 1;
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error to try delete Artist");
+            logger.warning(e.getMessage());
             return false;
         }
     }
@@ -120,7 +126,8 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error to try get Artist by id");
+            logger.warning(e.getMessage());
         }
 
         return false;
@@ -144,7 +151,8 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error to try get Artist by name");
+            logger.warning(e.getMessage());
         }
 
         return false;
@@ -171,7 +179,9 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error to try update Artist");
+            logger.warning(e.getMessage());
+            return null;
         }
 
         return artistas;

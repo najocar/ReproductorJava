@@ -4,6 +4,8 @@ import com.group1.reproductorjava.model.Connection.MariaDBConnection;
 import com.group1.reproductorjava.model.Entity.Artista;
 import com.group1.reproductorjava.model.Entity.Disco;
 import com.group1.reproductorjava.model.interfaces.IDiscoDAO;
+import com.group1.reproductorjava.utils.LoggerClass;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +22,8 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
     private final static String SELECT_BY_NAME = "SELECT id, nombre, id_artista, fecha, foto FROM disco WHERE nombre = ?";
     private final static String SELECT_ALL = "SELECT id, nombre, id_artista, fecha, foto FROM disco";
     private final static String SELECT_BY_ARTISTA = "SELECT id, nombre, id_artista, foto, fecha FROM disco WHERE id_artista = ?";
+
+    static LoggerClass logger = new LoggerClass(DiscoDAO.class.getName());
 
     public DiscoDAO(int id, String nombre, LocalDate fecha, String photo, Artista artista){
 
@@ -59,7 +63,8 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error to try get Disco by id");
+            logger.warning(e.getMessage());
             return false;
         }
         return false;
@@ -93,7 +98,8 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error to try get Disco by name");
+            logger.warning(e.getMessage());
             return false;
         }
         return false;
@@ -127,7 +133,8 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error to try get all Disco");
+            logger.warning(e.getMessage());
             return null;
         }
         return result;
@@ -155,7 +162,8 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
             return false;
 
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try save Disco");
+            logger.warning(e.getMessage());
             return false;
         }
     }
@@ -174,7 +182,8 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
             if(ps.executeUpdate() == 1)return true;
             return false;
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error to try delete Disco");
+            logger.warning(e.getMessage());
             return false;
         }
     }
@@ -211,7 +220,8 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
             }
 
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try get all Disco by Artista");
+            logger.warning(e.getMessage());
             return null;
         }
 
@@ -237,7 +247,8 @@ public class DiscoDAO extends Disco implements IDiscoDAO {
             if(ps.executeUpdate() == 1) return true;
             return false;
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try update Disco");
+            logger.warning(e.getMessage());
             return false;
         }
     }

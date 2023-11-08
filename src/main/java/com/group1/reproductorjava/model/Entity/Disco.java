@@ -18,16 +18,19 @@ public class Disco {
     private List<Cancion> canciones;
 
     public Disco() {
-        // Constructor vacío
+        this(-1, "", null, "", null);
     }
 
-    public Disco(int id, String nombre, LocalDate fecha, String photo, Artista artista, List<Cancion> canciones) {
+    public Disco(int id, String nombre, LocalDate fecha, String photo, Artista artista) {
         this.id = id;
         this.nombre = nombre;
         this.fecha = fecha;
         this.photo = photo;
         this.artista = artista;
-        this.canciones = canciones;
+    }
+
+    public Disco(int id) {
+        this(id, "", null, "", null);
     }
 
     public int getId() {

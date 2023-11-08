@@ -122,15 +122,18 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
                        setName(rs.getString("nombre"));
                        setNacionality(rs.getString("nacionalidad"));
                        setPhoto(rs.getString("foto"));
+                   }else{
+                       return false;
                    }
+
                 }
             }
         } catch (SQLException e) {
             logger.warning("Error to try get Artist by id");
             logger.warning(e.getMessage());
+            return false;
         }
-
-        return false;
+        return true;
     }
 
     @Override
@@ -147,15 +150,17 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
                         setName(rs.getString("nombre"));
                         setNacionality(rs.getString("nacionalidad"));
                         setPhoto(rs.getString("foto"));
+                    }else{
+                        return false;
                     }
                 }
             }
         } catch (SQLException e) {
             logger.warning("Error to try get Artist by name");
             logger.warning(e.getMessage());
+            return false;
         }
-
-        return false;
+        return true;
     }
     public List<Artista> getAllArtists() {
         Connection conn = MariaDBConnection.getConnection();

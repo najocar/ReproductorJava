@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group1.reproductorjava.controller.LoginViewController">
+   <children>
+      <ImageView fitHeight="750.0" fitWidth="1000.0" layoutX="1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/good_times_with_bad_music_1050x700.jpg" />
+         </image>
+      </ImageView>
+      <AnchorPane layoutX="284.0" layoutY="60.0" prefHeight="636.0" prefWidth="469.0" style="-fx-background-color: white; -fx-opacity: 95%;">
+         <children>
+            <Label layoutX="163.0" layoutY="30.0" text="BeatFlow">
+               <font>
+                  <Font name="System Bold" size="33.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="100.0" fitWidth="106.0" layoutX="190.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/logo.jpg" />
+               </image>
+            </ImageView>
+            <Label layoutX="71.0" layoutY="269.0" text="Usuario">
+               <font>
+                  <Font name="System Bold" size="25.0" />
+               </font>
+            </Label>
+            <Label layoutX="71.0" layoutY="385.0" text="Contraseña">
+               <font>
+                  <Font name="System Bold" size="25.0" />
+               </font>
+            </Label>
+            <TextField fx:id="UserField" layoutX="71.0" layoutY="306.0" prefHeight="25.0" prefWidth="316.0" promptText="Usuario" />
+            <PasswordField fx:id="PassField" layoutX="73.0" layoutY="421.0" prefHeight="25.0" prefWidth="316.0" promptText="Contraseña" />
+            <Button fx:id="login_btn" layoutX="120.0" layoutY="490.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="219.0" style="-fx-background-color: rgb(0, 94, 222);" text="Entrar" textFill="WHITE" />
+            <Button fx:id="register_btn" layoutX="120.0" layoutY="553.0" mnemonicParsing="false" onAction="#register" prefHeight="25.0" prefWidth="219.0" style="-fx-background-color: rgb(114, 111, 103);" text="Registrarse" textFill="WHITE" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

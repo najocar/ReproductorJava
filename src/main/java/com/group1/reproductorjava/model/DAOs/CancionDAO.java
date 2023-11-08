@@ -5,6 +5,7 @@ import com.group1.reproductorjava.model.Entity.Cancion;
 import com.group1.reproductorjava.model.Entity.Disco;
 import com.group1.reproductorjava.model.Entity.Lista;
 import com.group1.reproductorjava.model.interfaces.ICancionDAO;
+import com.group1.reproductorjava.utils.LoggerClass;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,6 +25,7 @@ public class CancionDAO extends Cancion implements ICancionDAO {
     private final static String SELECTSONGBYLIST = "SELECT c.id, c.nombre, c.duracion, c.genero, c.n_reproducciones, c.id_disco FROM cancion c JOIN cancion_lista cl ON c.id = cl.id_cancion WHERE cl.id_lista = ?";
     private final static String UPDATE = "UPDATE cancion SET nombre = ?, duracion = ?, genero = ?, n_reproducciones = ?, id_disco = ? WHERE id = ?";
 
+    static LoggerClass logger = new LoggerClass(CancionDAO.class.getName());
 
     public CancionDAO(int id){
         getCancion(id);
@@ -65,7 +67,8 @@ public class CancionDAO extends Cancion implements ICancionDAO {
             }
 
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try get Cancion by id");
+            logger.warning(e.getMessage());
             return false;
         }
 
@@ -100,7 +103,8 @@ public class CancionDAO extends Cancion implements ICancionDAO {
             }
 
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try get Cancion by name");
+            logger.warning(e.getMessage());
             return false;
         }
 
@@ -138,7 +142,8 @@ public class CancionDAO extends Cancion implements ICancionDAO {
             }
 
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try get all Cancion");
+            logger.warning(e.getMessage());
             return null;
         }
 
@@ -169,7 +174,8 @@ public class CancionDAO extends Cancion implements ICancionDAO {
                 if(ps.executeUpdate() == 1) return true;
                 return false;
             }catch (SQLException e){
-                e.printStackTrace();
+                logger.warning("Error to try save Cancion");
+                logger.warning(e.getMessage());
                 return false;
             }
         }
@@ -192,7 +198,8 @@ public class CancionDAO extends Cancion implements ICancionDAO {
             return false;
 
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try delete Cancion");
+            logger.warning(e.getMessage());
             return false;
         }
     }
@@ -238,7 +245,8 @@ public class CancionDAO extends Cancion implements ICancionDAO {
             }
 
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try get all Cancion by gender");
+            logger.warning(e.getMessage());
             return null;
         }
 
@@ -275,7 +283,8 @@ public class CancionDAO extends Cancion implements ICancionDAO {
             }
 
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try get all Cancion by List");
+            logger.warning(e.getMessage());
             return null;
         }
 
@@ -305,7 +314,8 @@ public class CancionDAO extends Cancion implements ICancionDAO {
             return false;
 
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try update Cancion");
+            logger.warning(e.getMessage());
             return false;
         }
     }

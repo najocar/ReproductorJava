@@ -6,6 +6,7 @@ import com.group1.reproductorjava.model.Entity.Comentario;
 import com.group1.reproductorjava.model.Entity.Lista;
 import com.group1.reproductorjava.model.Entity.Usuario;
 import com.group1.reproductorjava.model.interfaces.IListaDAO;
+import com.group1.reproductorjava.utils.LoggerClass;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ public class ListaDAO extends Lista implements IListaDAO {
     private final static String SELECTBYCREADOR = "SELECT id,nombre,id_user,descripcion FROM user WHERE id_user=?";
     private final static String SAVESONGS = "INSERT INTO cancion_lista (id_lista, id_cancion) VALUES(?,?)";
     private final static String DELETESONGS = "DELETE FROM cancion_lista WHERE id=?";
+
+    static LoggerClass logger = new LoggerClass(ListaDAO.class.getName());
 
     public ListaDAO(int id, String nombre, Usuario userCreator, String descripcion) {
         super(id, nombre, userCreator, descripcion);
@@ -57,7 +60,8 @@ public class ListaDAO extends Lista implements IListaDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error to try get Lista by id");
+            logger.warning(e.getMessage());
             return false;
         }
         return true;
@@ -89,7 +93,8 @@ public class ListaDAO extends Lista implements IListaDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error to try get all Lista");
+            logger.warning(e.getMessage());
             return null;
         }
         return result;
@@ -134,7 +139,8 @@ public class ListaDAO extends Lista implements IListaDAO {
                 return false;
 
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.warning("Error to try save Lista");
+                logger.warning(e.getMessage());
                 return false;
             }
         }
@@ -170,7 +176,8 @@ public class ListaDAO extends Lista implements IListaDAO {
             return false;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error to try delete Cancion on Lista");
+            logger.warning(e.getMessage());
             return false;
         }
     }
@@ -192,7 +199,8 @@ public class ListaDAO extends Lista implements IListaDAO {
             return false;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error to try update Lista");
+            logger.warning(e.getMessage());
             return false;
         }
     }
@@ -219,7 +227,8 @@ public class ListaDAO extends Lista implements IListaDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error to try get Lista by User");
+            logger.warning(e.getMessage());
             return null;
         }
         return result;
@@ -237,7 +246,8 @@ public class ListaDAO extends Lista implements IListaDAO {
             return false;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error to try delete Lista");
+            logger.warning(e.getMessage());
             return false;
         }
     }

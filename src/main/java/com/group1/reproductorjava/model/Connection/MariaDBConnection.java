@@ -1,5 +1,7 @@
 package com.group1.reproductorjava.model.Connection;
 
+import com.group1.reproductorjava.utils.LoggerClass;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -11,6 +13,8 @@ public class MariaDBConnection {
     private final static String user = "root";
     private final static String password = "";
 
+    static LoggerClass logger = new LoggerClass(MariaDBConnection.class.getName());
+
     private MariaDBConnection(){}
 
     public static Connection getConnection(){
@@ -19,7 +23,8 @@ public class MariaDBConnection {
                 conn = DriverManager.getConnection(uri, user, password);
             } catch (SQLException e) {
                 conn = null;
-                throw new RuntimeException(e);
+                logger.warning("Error to try connect with db");
+                logger.warning(e.getMessage());
             }
         }
         return conn;
@@ -30,7 +35,8 @@ public class MariaDBConnection {
             try {
                 conn.close();
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                logger.warning("Error to try close connection with db");
+                logger.warning(e.getMessage());
             } finally {
                 conn = null;
             }

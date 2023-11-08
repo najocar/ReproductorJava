@@ -5,6 +5,7 @@ import com.group1.reproductorjava.model.Entity.Comentario;
 import com.group1.reproductorjava.model.Entity.Lista;
 import com.group1.reproductorjava.model.Entity.Usuario;
 import com.group1.reproductorjava.model.interfaces.IComentarioDAO;
+import com.group1.reproductorjava.utils.LoggerClass;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -19,6 +20,8 @@ public class ComentarioDAO extends Comentario implements IComentarioDAO {
     private final static String SELECTBYLIST = "SELECT id, fecha, contenido, id_user, id_lista FROM comentario WHERE id_lista = ?";
     private final static String INSERT = "INSERT INTO comentario (fecha, contenido, id_user, id_lista) VALUES (?, ?, ?, ?) ";
     private final static String DELETE = "DELETE FROM comentario WHERE id = ?";
+
+    static LoggerClass logger = new LoggerClass(ComentarioDAO.class.getName());
 
     public ComentarioDAO(int id){
         getComentario(id);
@@ -60,7 +63,8 @@ public class ComentarioDAO extends Comentario implements IComentarioDAO {
             }
 
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try get Comentario by id");
+            logger.warning(e.getMessage());
             return false;
         }
 
@@ -95,7 +99,8 @@ public class ComentarioDAO extends Comentario implements IComentarioDAO {
             }
 
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try get all Comentario");
+            logger.warning(e.getMessage());
             return null;
         }
 
@@ -124,7 +129,8 @@ public class ComentarioDAO extends Comentario implements IComentarioDAO {
                 return false;
 
             }catch (SQLException e){
-                e.printStackTrace();
+                logger.warning("Error to try save Comentario");
+                logger.warning(e.getMessage());
                 return false;
             }
         }
@@ -148,7 +154,8 @@ public class ComentarioDAO extends Comentario implements IComentarioDAO {
             return false;
 
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try delete Comentario");
+            logger.warning(e.getMessage());
             return false;
         }
     }
@@ -183,7 +190,8 @@ public class ComentarioDAO extends Comentario implements IComentarioDAO {
             }
 
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try get all Comentario by Usuario");
+            logger.warning(e.getMessage());
             return null;
         }
 
@@ -220,7 +228,8 @@ public class ComentarioDAO extends Comentario implements IComentarioDAO {
             }
 
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warning("Error to try get all Comentario by Lista");
+            logger.warning(e.getMessage());
             return null;
         }
 

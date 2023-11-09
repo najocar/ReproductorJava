@@ -20,6 +20,9 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
     private final static String SELECT_ALL = "SELECT * FROM artista";
     private final static String SELECT_BY_NAME = "SELECT * FROM artista WHERE nombre=?";
 
+    /**
+     *
+     */
     static LoggerClass logger = new LoggerClass(ArtistaDAO.class.getName());
 
     public ArtistaDAO(int id) {
@@ -39,6 +42,11 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
 
     }
 
+    /**
+     * Metodo save Artista que guarda un artista en la base de datos
+     * @return true si se guarda
+     * @return  false si no se guarda
+     */
     public boolean saveArtista() {
         if (getId() != -1) {
             return updateArtista();
@@ -72,6 +80,11 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
         }
     }
 
+    /**
+     * Metodo updateArtista que actualiza los datos de un artista existente
+     * @return true si se hace correctamente
+     * @return false si hubo algun fallo
+     */
     public boolean updateArtista() {
         if(getId()==-1) return false;
         Connection conn = MariaDBConnection.getConnection();
@@ -92,6 +105,11 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
         }
     }
 
+    /**
+     * Metodo delete artista que borra el artista de la base de datos
+     * @return true si se ha borrado
+     * @retrun false si no se ha podido borrar
+     */
     public boolean deleteArtista() {
         Connection conn = MariaDBConnection.getConnection();
         if (conn == null)
@@ -108,6 +126,12 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
         }
     }
 
+    /**
+     * Metodo get artista que busca el artista en la base de datos por el id
+     * @param id del artista a buscar
+     * @return true si se ha encontrado
+     * @return false si no se ha encontrado
+     */
     public boolean getArtista(int id) {
         Connection conn = MariaDBConnection.getConnection();
         if (conn == null)
@@ -136,6 +160,12 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
         return true;
     }
 
+    /**
+     * Metodo getArtista que busca al artista en la base de datos por el nombre del artista
+     * @param name del artista a buscar
+     * @return true si se ha encontrado
+     * @return false si no se ha encontrado
+     */
     @Override
     public boolean getArtista(String name) {
         Connection conn = MariaDBConnection.getConnection();
@@ -162,6 +192,11 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
         }
         return true;
     }
+
+    /**
+     * metodo getallartist que obtienen todos los artistas de la base de datos
+     * @return List con todos los artistas de las base de datos
+     */
     public List<Artista> getAllArtists() {
         Connection conn = MariaDBConnection.getConnection();
         if (conn == null)
@@ -192,6 +227,10 @@ public class ArtistaDAO extends Artista implements IArtistaDAO {
         return artistas;
     }
 
+    /**
+     * metodo getdiscos que obtiene los discos que tengan el id del artista
+     * @return list con los discos
+     */
    public List<Disco>getDiscos(){
         if(super.getDiscos()==null){
             setDiscos(DiscoDAO.getAllDiscosByArtista(this));

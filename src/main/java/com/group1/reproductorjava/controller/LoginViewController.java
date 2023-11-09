@@ -1,5 +1,6 @@
 package com.group1.reproductorjava.controller;
 
+import com.group1.reproductorjava.AppTestView;
 import com.group1.reproductorjava.HelloApplication;
 import com.group1.reproductorjava.model.DAOs.ArtistaDAO;
 import com.group1.reproductorjava.model.DAOs.UsuarioDAO;
@@ -34,15 +35,25 @@ public class LoginViewController {
         } else {
             ArtistaDAO ADAO = new ArtistaDAO();
             if (ADAO.getArtista(nickname)) {
-                HelloApplication.setRoot("HomeView");
+                AppTestView.setRoot("artistview");
             } else {
-                showError("No se encuentra el nickname");
+                showError("No se encuentra el artista");
+            }if(nickname.isEmpty()){
+                showError("El campo del nickname está vacío");
+            }else{
+                UsuarioDAO UDAO=new UsuarioDAO();
+                if(UDAO.getUsuario(nickname)){
+                    AppTestView.setRoot("userview");
+                }else{
+                    showError("No se encuentra el usuario");
+                }
             }
+
         }
     }
     @FXML
     private void register() throws IOException {
-        HelloApplication.setRoot("Register");
+        AppTestView.setRoot("Register");
     }
 
     private void showError(String mensaje) {
@@ -52,8 +63,5 @@ public class LoginViewController {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-
-
-
 
 }

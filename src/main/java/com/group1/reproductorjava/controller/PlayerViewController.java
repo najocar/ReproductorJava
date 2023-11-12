@@ -80,8 +80,11 @@ public class PlayerViewController {
      * Carga la información de la canción seleccionada en la interfaz.
      */
     private void loadSelectedSong() {
-        songNameLabel.setText(selectedSongName);
-        updateReproductions(selectedSongName);
+        Cancion currentSong = ControlDTO.getSong();
+        if (currentSong != null){
+            songNameLabel.setText(currentSong.getName());
+        }
+        updateReproductions();
 
     }
     /*
@@ -89,17 +92,13 @@ public class PlayerViewController {
      *
      * @param songName Nombre de la canción para la cual se actualizarán las reproducciones.
      */
-    private void updateReproductions(String songName) {
-        CancionDAO cancionDAO = new CancionDAO();
-
+    private void updateReproductions() {
         Cancion currentSong = ControlDTO.getSong();
-
-        if (currentSong != null && currentSong.getName().equals(songName)) {
-            if (cancionDAO.getCancion(songName)) {
-                cancionDAO.oneReproduction();
-                ControlDTO.setSong(cancionDAO.getCancion(songName));
+        if (currentSong != null) {
+            CancionDAO cancionDAO= new CancionDAO(currentSong);
+            cancionDAO.oneReproduction();
+            ControlDTO.getSong().setnReproductions(ControlDTO.getSong().getnReproductions()+1);
             }
         }
     }
 
-}

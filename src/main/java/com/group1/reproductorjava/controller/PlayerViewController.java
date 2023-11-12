@@ -57,7 +57,7 @@ public class PlayerViewController {
      * Maneja el evento de reproducción y pausa del reproductor.
      */
     @FXML
-    private void playAndPause() {
+    private void PlayAndPause() {
         if (isPlaying) {
             play_btn.setText("▶");
         } else {

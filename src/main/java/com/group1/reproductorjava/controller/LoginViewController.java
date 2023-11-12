@@ -34,10 +34,9 @@ public class LoginViewController {
             showError("El campo del nickname está vacío");
         } else {
 
-            ArtistaDAO ADAO = new ArtistaDAO();
             UsuarioDAO UDAO=new UsuarioDAO(1);
             if(UDAO.getUsuario(nickname)){
-                AppTestView.setRoot("userview");
+                HelloApplication.setRoot("userview");
             }
             else{
                 showError("no se ha encontrado el nickname");
@@ -46,7 +45,7 @@ public class LoginViewController {
     }
     @FXML
     private void register() throws IOException {
-        AppTestView.setRoot("Register");
+        HelloApplication.setRoot("Register");
     }
 
     private void showError(String mensaje) {

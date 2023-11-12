@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group1.reproductorjava.controller.CancionListViewController">
+<AnchorPane prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group1.reproductorjava.controller.CancionListViewController">
    <children>
-      <TableView fx:id="table" layoutX="254.0" layoutY="119.0" prefHeight="606.0" prefWidth="722.0">
+      <TableView fx:id="table" layoutX="254.0" layoutY="119.0" prefHeight="559.0" prefWidth="723.0">
         <columns>
           <TableColumn fx:id="colName" prefWidth="720.9538421630859" text="CANCIONES" />
         </columns>
@@ -19,12 +19,13 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Button fx:id="btnHome" layoutX="92.0" layoutY="687.0" mnemonicParsing="false" text="INICIO" />
+      <Button fx:id="btnHome" layoutX="915.0" layoutY="697.0" mnemonicParsing="false" onAction="#goHome" text="INICIO" />
       <Label fx:id="labelUserName" layoutX="66.0" layoutY="160.0" text="USUARIO">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Button fx:id="btnPlay" layoutX="919.0" layoutY="83.0" mnemonicParsing="false" onAction="#play" text="PLAY" />
+      <Button fx:id="btnPlay" layoutX="838.0" layoutY="697.0" mnemonicParsing="false" onAction="#play" text="PLAY" />
+      <Button fx:id="btnExit" layoutX="93.0" layoutY="643.0" mnemonicParsing="false" onAction="#goExit" text="SALIR" />
    </children>
 </AnchorPane>

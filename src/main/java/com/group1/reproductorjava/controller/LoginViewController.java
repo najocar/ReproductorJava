@@ -33,6 +33,8 @@ public class LoginViewController {
         if (nickname.isEmpty()) {
             showError("El campo del nickname está vacío");
         } else {
+
+            ArtistaDAO ADAO = new ArtistaDAO();
             UsuarioDAO UDAO=new UsuarioDAO();
             if(UDAO.getUsuario(nickname)){
                 AppTestView.setRoot("userview");

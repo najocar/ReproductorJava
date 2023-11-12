@@ -4,6 +4,7 @@ import com.group1.reproductorjava.AppTestView;
 import com.group1.reproductorjava.HelloApplication;
 import com.group1.reproductorjava.model.DAOs.ArtistaDAO;
 import com.group1.reproductorjava.model.DAOs.UsuarioDAO;
+import com.group1.reproductorjava.model.DTOs.ControlDTO;
 import com.group1.reproductorjava.model.Entity.Artista;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -36,6 +37,7 @@ public class LoginViewController {
 
             UsuarioDAO UDAO=new UsuarioDAO(1);
             if(UDAO.getUsuario(nickname)){
+                ControlDTO.setUser(UDAO);
                 HelloApplication.setRoot("Home-view");
             }
             else{

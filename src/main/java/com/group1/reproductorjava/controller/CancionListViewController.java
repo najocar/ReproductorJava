@@ -47,7 +47,6 @@ public class CancionListViewController implements Initializable {
         cancionList = FXCollections.observableArrayList();
         this.colName.setCellValueFactory(new PropertyValueFactory("name"));
 
-        ControlDTO.setUser(new UsuarioDAO(5));
         ControlDTO.setLista(new ListaDAO(3));
 
         loadTable();

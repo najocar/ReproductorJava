@@ -5,7 +5,10 @@ import com.group1.reproductorjava.model.DAOs.CancionDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -27,6 +30,9 @@ public class PlayerViewController {
 
     @FXML
     private Button next_btn;
+
+    @FXML
+    private ImageView songImage;
 
     @FXML
     private Label songNameLabel;
@@ -74,6 +80,15 @@ public class PlayerViewController {
     private void loadSelectedSong() {
         songNameLabel.setText(selectedSongName);
         updateReproductions(selectedSongName);
+
+        String imagePath = CancionDAO.getImage(selectedSongName);
+
+        // Verifica que la ruta de la imagen no sea nula
+        if (imagePath != null) {
+            // Carga la imagen de la canción en el ImageView
+            Image image = new Image(new File(imagePath).toURI().toString());
+            songImage.setImage(image);
+        }
     }
 
     /**
@@ -87,4 +102,6 @@ public class PlayerViewController {
             cancionDAO.oneReproduction();
         }
     }
+
+
 }

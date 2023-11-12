@@ -36,7 +36,7 @@ public class LoginViewController {
 
             UsuarioDAO UDAO=new UsuarioDAO(1);
             if(UDAO.getUsuario(nickname)){
-                HelloApplication.setRoot("userview");
+                HelloApplication.setRoot("Home-view");
             }
             else{
                 showError("no se ha encontrado el nickname");
@@ -45,7 +45,7 @@ public class LoginViewController {
     }
     @FXML
     private void register() throws IOException {
-        HelloApplication.setRoot("Register");
+        System.out.println("no está implementado");
     }
 
     private void showError(String mensaje) {

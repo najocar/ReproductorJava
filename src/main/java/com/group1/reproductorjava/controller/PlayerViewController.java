@@ -65,6 +65,7 @@ public class PlayerViewController {
             Image imagenJ = new Image(new File("../resources/com/group1/reproductorjava/images/"+imagePath).toURI().toString());
             image.setImage(imagenJ);
         }
+        setSongName(ControlDTO.getUser().getName());
     }
     /**
      * Establece el nombre de la canción seleccionada.

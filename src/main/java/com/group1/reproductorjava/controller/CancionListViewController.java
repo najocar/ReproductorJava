@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 public class CancionListViewController implements Initializable {
 
     @FXML
-    private Button btnHomem, btnPlay;
+    private Button btnHome, btnPlay, btnExit;
 
     @FXML
     private TableView<Cancion> table;
@@ -100,6 +100,16 @@ public class CancionListViewController implements Initializable {
             HelloApplication.setRoot("Home-view");
         } catch (IOException err) {
             logger.warning("Error navigate to Home-View");
+            logger.warning(err.getMessage());
+        }
+    }
+
+    @FXML
+    public void goExit(){
+        try {
+            HelloApplication.setRoot("LoginView");
+        } catch (IOException err) {
+            logger.warning("Error navigate to LoginView");
             logger.warning(err.getMessage());
         }
     }

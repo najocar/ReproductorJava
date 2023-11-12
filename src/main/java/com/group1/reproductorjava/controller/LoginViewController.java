@@ -37,18 +37,13 @@ public class LoginViewController {
             if (ADAO.getArtista(nickname)) {
                 AppTestView.setRoot("artistview");
             } else {
-                showError("No se encuentra el artista");
-            }if(nickname.isEmpty()){
-                showError("El campo del nickname está vacío");
-            }else{
                 UsuarioDAO UDAO=new UsuarioDAO();
                 if(UDAO.getUsuario(nickname)){
                     AppTestView.setRoot("userview");
                 }else{
-                    showError("No se encuentra el usuario");
+                    showError("no se ha encontrado el nickname");
                 }
             }
-
         }
     }
     @FXML

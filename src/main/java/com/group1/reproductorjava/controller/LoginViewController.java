@@ -35,7 +35,7 @@ public class LoginViewController {
         } else {
 
             ArtistaDAO ADAO = new ArtistaDAO();
-            UsuarioDAO UDAO=new UsuarioDAO();
+            UsuarioDAO UDAO=new UsuarioDAO(1);
             if(UDAO.getUsuario(nickname)){
                 AppTestView.setRoot("userview");
             }

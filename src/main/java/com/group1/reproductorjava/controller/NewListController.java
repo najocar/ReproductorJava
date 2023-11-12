@@ -4,6 +4,7 @@ import com.group1.reproductorjava.HelloApplication;
 import com.group1.reproductorjava.model.DAOs.CancionDAO;
 import com.group1.reproductorjava.model.DAOs.ListaDAO;
 import com.group1.reproductorjava.model.DAOs.UsuarioDAO;
+import com.group1.reproductorjava.model.DTOs.ControlDTO;
 import com.group1.reproductorjava.model.Entity.Cancion;
 import com.group1.reproductorjava.model.Entity.Lista;
 import javafx.collections.FXCollections;
@@ -13,7 +14,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -36,6 +40,9 @@ public class NewListController implements Initializable {
     @FXML
     private TextField descListField;
 
+    @FXML
+    private ImageView image;
+
 
 
 
@@ -43,7 +50,7 @@ public class NewListController implements Initializable {
 
     private ObservableList<Cancion> canciones = FXCollections.observableArrayList();
 
-    UsuarioDAO userDao = new UsuarioDAO(2); //cambiar esto por el id del usuario loggeado
+    UsuarioDAO userDao = new UsuarioDAO(ControlDTO.getUser()); //cambiar esto por el id del usuario loggeado
 
 
     @Override
@@ -78,6 +85,11 @@ public class NewListController implements Initializable {
     @FXML
     public void setInfoUser() {
         userName.setText(userDao.getName());
+        String imagePath = userDao.getPhoto();
+        if (imagePath != null) {
+            Image imagenJ = new Image(new File("../resources/com/group1/reproductorjava/images/"+imagePath).toURI().toString());
+            image.setImage(imagenJ);
+        }
     }
 
     @FXML
@@ -98,6 +110,7 @@ public class NewListController implements Initializable {
         }
     }
 
+
     @FXML
     public void createList() throws SQLException {
 
@@ -112,8 +125,6 @@ public class NewListController implements Initializable {
             l.saveSongRelation(cancion);
         }
         goHome();
-
-
 
 
     }

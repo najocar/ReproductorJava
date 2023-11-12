@@ -105,8 +105,8 @@ public class HomeViewController implements Initializable {
     @FXML
     public void deleteList() {
         if (selectList()!=null) {
-            listas.remove(selectList());
             new ListaDAO(selectList()).deleteLista(selectList());
+            listas.remove(selectList());
         }
     }
 

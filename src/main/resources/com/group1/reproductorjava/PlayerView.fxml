@@ -28,7 +28,7 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Label fx:id="songName" layoutX="235.0" layoutY="536.0" text="CANCION">
+      <Label fx:id="songNameLabel" layoutX="235.0" layoutY="536.0" text="CANCION">
          <font>
             <Font size="15.0" />
          </font>

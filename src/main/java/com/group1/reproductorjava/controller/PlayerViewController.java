@@ -3,6 +3,7 @@ package com.group1.reproductorjava.controller;
 import com.group1.reproductorjava.AppTestView;
 import com.group1.reproductorjava.HelloApplication;
 import com.group1.reproductorjava.model.DAOs.CancionDAO;
+import com.group1.reproductorjava.model.DAOs.UsuarioDAO;
 import com.group1.reproductorjava.model.DTOs.ControlDTO;
 import com.group1.reproductorjava.model.Entity.Cancion;
 import javafx.event.ActionEvent;
@@ -41,8 +42,30 @@ public class PlayerViewController {
     @FXML
     private Label songNameLabel;
 
+    @FXML
+    private Label userlabel;
+
+    @FXML
+    private ImageView image;
+
     private String selectedSongName;
 
+    UsuarioDAO userDao = new UsuarioDAO(2);
+
+    public void initialize(){
+        setInfoUser();
+    }
+
+    @FXML
+    public void setInfoUser() {
+        userlabel.setText(userDao.getName());
+
+        String imagePath = userDao.getPhoto();
+        if (imagePath != null) {
+            Image imagenJ = new Image(new File("../resources/com/group1/reproductorjava/images/"+imagePath).toURI().toString());
+            image.setImage(imagenJ);
+        }
+    }
     /**
      * Establece el nombre de la canción seleccionada.
      *

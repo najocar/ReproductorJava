@@ -10,13 +10,13 @@
 
 <AnchorPane prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group1.reproductorjava.controller.PlayerViewController">
    <children>
-      <ImageView fitHeight="112.0" fitWidth="138.0" layoutX="46.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="image" fitHeight="112.0" fitWidth="138.0" layoutX="46.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/User-avatar.svg.png" />
          </image>
       </ImageView>
       <ProgressBar layoutX="238.0" layoutY="570.0" prefHeight="18.0" prefWidth="657.0" progress="0.0" />
-      <Label layoutX="71.0" layoutY="142.0" text="USERNAME" />
+      <Label fx:id="userlabel" layoutX="71.0" layoutY="142.0" text="USERNAME" />
       <Label layoutX="235.0" layoutY="509.0" text="REPRODUCIENDO:">
          <font>
             <Font name="System Bold" size="18.0" />

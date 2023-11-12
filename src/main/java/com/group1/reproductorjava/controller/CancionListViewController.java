@@ -2,6 +2,7 @@ package com.group1.reproductorjava.controller;
 
 import com.group1.reproductorjava.model.DAOs.CancionDAO;
 import com.group1.reproductorjava.model.DAOs.ListaDAO;
+import com.group1.reproductorjava.model.DAOs.UsuarioDAO;
 import com.group1.reproductorjava.model.DTOs.ControlDTO;
 import com.group1.reproductorjava.model.Entity.Cancion;
 import javafx.collections.FXCollections;
@@ -9,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -20,13 +22,16 @@ import java.util.ResourceBundle;
 public class CancionListViewController implements Initializable {
 
     @FXML
-    private Button btnHome;
+    private Button btnHomem, btnPlay;
 
     @FXML
     private TableView<Cancion> table;
 
     @FXML
     private TableColumn colName;
+
+    @FXML
+    private Label labelListaName, labelUserName;
 
     private ObservableList<Cancion> cancionList;
 
@@ -37,9 +42,11 @@ public class CancionListViewController implements Initializable {
         cancionList = FXCollections.observableArrayList();
         this.colName.setCellValueFactory(new PropertyValueFactory("name"));
 
+        ControlDTO.setUser(new UsuarioDAO(5));
         ControlDTO.setLista(new ListaDAO(3));
 
         loadTable();
+        loadView();
         System.out.println("terminado");
     }
 
@@ -51,5 +58,28 @@ public class CancionListViewController implements Initializable {
         System.out.println(cancionList);
         table.setItems(cancionList);
         table.refresh();
+    }
+
+    public void loadView(){
+        if(ControlDTO.getLista() != null)labelListaName.setText(ControlDTO.getLista().getName());
+        if(ControlDTO.getUser() != null)labelUserName.setText(ControlDTO.getUser().getName());
+
+    }
+
+    @FXML
+    private Cancion selectSong(){
+        Cancion result = null;
+        Cancion aux = this.table.getSelectionModel().getSelectedItem();
+        if(aux!=null)result = aux;
+        return result;
+    }
+
+    @FXML
+    public void play(){
+        Cancion aux = selectSong();
+        if(aux == null) return;
+        ControlDTO.setSong(aux);
+        //AQUI NAVEGARIAMOS A LA VISTA REPRODUCTOR
+        System.out.println(ControlDTO.getSong());
     }
 }

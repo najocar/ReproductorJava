@@ -2,6 +2,8 @@ package com.group1.reproductorjava.controller;
 
 import com.group1.reproductorjava.AppTestView;
 import com.group1.reproductorjava.model.DAOs.CancionDAO;
+import com.group1.reproductorjava.model.DTOs.ControlDTO;
+import com.group1.reproductorjava.model.Entity.Cancion;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -81,27 +83,23 @@ public class PlayerViewController {
         songNameLabel.setText(selectedSongName);
         updateReproductions(selectedSongName);
 
-        String imagePath = CancionDAO.getImage(selectedSongName);
-
-        // Verifica que la ruta de la imagen no sea nula
-        if (imagePath != null) {
-            // Carga la imagen de la canción en el ImageView
-            Image image = new Image(new File(imagePath).toURI().toString());
-            songImage.setImage(image);
-        }
     }
-
-    /**
+    /*
      * Actualiza el número de reproducciones de la canción seleccionada.
      *
      * @param songName Nombre de la canción para la cual se actualizarán las reproducciones.
      */
     private void updateReproductions(String songName) {
         CancionDAO cancionDAO = new CancionDAO();
-        if (cancionDAO.getCancion(songName)) {
-            cancionDAO.oneReproduction();
+
+        Cancion currentSong = ControlDTO.getSong();
+
+        if (currentSong != null && currentSong.getName().equals(songName)) {
+            if (cancionDAO.getCancion(songName)) {
+                cancionDAO.oneReproduction();
+                ControlDTO.setSong(cancionDAO.getCancion(songName));
+            }
         }
     }
-
 
 }

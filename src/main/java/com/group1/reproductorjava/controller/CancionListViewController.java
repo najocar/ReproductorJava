@@ -43,15 +43,11 @@ public class CancionListViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("inicializando");
         cancionList = FXCollections.observableArrayList();
         this.colName.setCellValueFactory(new PropertyValueFactory("name"));
 
-        ControlDTO.setLista(new ListaDAO(3));
-
         loadTable();
         loadView();
-        System.out.println("terminado");
     }
 
     public void loadTable(){

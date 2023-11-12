@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group1.reproductorjava.controller.PlayerViewController">
+   <children>
+      <ImageView fitHeight="112.0" fitWidth="138.0" layoutX="46.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/User-avatar.svg.png" />
+         </image>
+      </ImageView>
+      <ProgressBar layoutX="238.0" layoutY="570.0" prefHeight="18.0" prefWidth="657.0" progress="0.0" />
+      <Label layoutX="71.0" layoutY="142.0" text="USERNAME" />
+      <Label layoutX="235.0" layoutY="509.0" text="REPRODUCIENDO:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="back_btn" layoutX="31.0" layoutY="570.0" mnemonicParsing="false" onAction="#goHome" prefHeight="43.0" prefWidth="112.0" style="-fx-background-color: rgb(10, 87, 202);" text="➕ SALIR" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Label fx:id="songName" layoutX="235.0" layoutY="536.0" text="CANCION">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="494.0" fitWidth="789.0" layoutX="238.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/good_times_with_bad_music_1050x700.jpg" />
+         </image>
+      </ImageView>
+      <Button fx:id="play_btn" layoutX="524.0" layoutY="613.0" mnemonicParsing="false" onAction="#PlayAndPause" prefHeight="43.0" prefWidth="52.0" style="-fx-background-color: rgb(10, 87, 202);" text="▶" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="stop_btn" layoutX="467.0" layoutY="613.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="42.0" style="-fx-background-color: rgb(10, 87, 202);" text="⏹" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="next_btn" layoutX="593.0" layoutY="613.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="52.0" style="-fx-background-color: rgb(10, 87, 202);" text="⏭" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="last_btn" layoutX="399.0" layoutY="613.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="52.0" style="-fx-background-color: rgb(10, 87, 202);" text="⏮" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

@@ -28,14 +28,16 @@ public class Test {
 //        new ListaDAO(lista).save();
 
 
-        Cancion cancion = new CancionDAO(5);
-        cancion.setName("y se prendió");
-        new CancionDAO(cancion).saveCancion();
-        System.out.println(cancion);
-        System.out.println(CancionDAO.getCancionesByList(3));
+//        Cancion cancion = new CancionDAO(5);
+//        cancion.setName("y se prendió");
+//        new CancionDAO(cancion).saveCancion();
+//        System.out.println(cancion);
+//        System.out.println(CancionDAO.getCancionesByList(3));
 
 //        Lista lista = new ListaDAO(3);
 //        lista.setName("subnormal");
 //        new ListaDAO(lista).save();
+
+        System.out.println(CancionDAO.getAllCanciones());
     }
 }

@@ -1,5 +1,6 @@
 package com.group1.reproductorjava.model.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,7 +9,7 @@ public class Lista {
     private String name;
     private String description;
     protected Usuario userCreator;
-    protected List<Cancion> canciones;
+    protected List<Cancion> canciones = new ArrayList<>();
     protected List<Comentario> comentarios;
 
     public Lista(int id, String name, Usuario userCreator, String description) {

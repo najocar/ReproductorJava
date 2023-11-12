@@ -7,5 +7,6 @@ module com.group1.reproductorjava {
 
     opens com.group1.reproductorjava to javafx.fxml;
     opens com.group1.reproductorjava.controller to javafx.fxml;
+    opens com.group1.reproductorjava.model.Entity to javafx.base;
     exports com.group1.reproductorjava;
 }

@@ -83,11 +83,13 @@ public class HomeViewController implements Initializable {
 
     @FXML
     public void goList() {
-        try {
-            ControlDTO.setLista(selectList());
-            HelloApplication.setRoot("CancionListView");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (selectList()!=null) {
+            try {
+                ControlDTO.setLista(selectList());
+                HelloApplication.setRoot("CancionListView");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

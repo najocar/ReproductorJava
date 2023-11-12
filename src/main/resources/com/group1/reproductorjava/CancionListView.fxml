@@ -28,4 +28,5 @@
       <Button fx:id="btnPlay" layoutX="838.0" layoutY="697.0" mnemonicParsing="false" onAction="#play" text="PLAY" />
       <Button fx:id="btnExit" layoutX="93.0" layoutY="643.0" mnemonicParsing="false" onAction="#goExit" text="SALIR" />
    </children>
+
 </AnchorPane>

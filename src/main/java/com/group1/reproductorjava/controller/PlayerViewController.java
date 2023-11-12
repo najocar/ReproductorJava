@@ -1,9 +1,11 @@
 package com.group1.reproductorjava.controller;
 
 import com.group1.reproductorjava.AppTestView;
+import com.group1.reproductorjava.HelloApplication;
 import com.group1.reproductorjava.model.DAOs.CancionDAO;
 import com.group1.reproductorjava.model.DTOs.ControlDTO;
 import com.group1.reproductorjava.model.Entity.Cancion;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -57,7 +59,7 @@ public class PlayerViewController {
      * Maneja el evento de reproducción y pausa del reproductor.
      */
     @FXML
-    private void PlayAndPause() {
+    private void Play() {
         if (isPlaying) {
             play_btn.setText("▶");
         } else {
@@ -73,7 +75,7 @@ public class PlayerViewController {
      */
     @FXML
     private void goHome() throws IOException {
-        AppTestView.setRoot("homeview");
+        HelloApplication.setRoot("Home-view");
     }
 
     /**
@@ -100,5 +102,5 @@ public class PlayerViewController {
             ControlDTO.getSong().setnReproductions(ControlDTO.getSong().getnReproductions()+1);
             }
         }
-    }
+}
 
